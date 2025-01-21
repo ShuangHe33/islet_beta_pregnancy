@@ -1,2 +1,5 @@
 # islet_beta_pregnnacy
-Deciphar adaptive cell state transitions of β-cells during pregnancy using scRNA-seq and multi-omics analysis.
+The repository contains scripts for our study "ACSS2 mediates an epigenetic pathway to regulate β-cell adaptation during gestation in mice", published in Nature Communications, 2025.
+
+
+
