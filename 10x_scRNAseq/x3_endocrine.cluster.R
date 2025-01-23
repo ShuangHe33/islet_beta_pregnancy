@@ -293,7 +293,7 @@ print(p.plot)
 dev.off()
 ########marker########
 marker.sym <- c(
-                # "Spi1",#°×Ï¸°û
+                # "Spi1",#Â°Ã—ÃÂ¸Â°Ã»
                 # "Procr",
                 # "Fcgr1",
                 # "Neurod1",#endocrine
@@ -311,9 +311,9 @@ marker.sym <- c(
                 # #"S100a4",
                 # "Itga5",
                 # "Sdc1",
-                # "Pecam1",#Ñª¹Ü
-                # "Gypa",#ºìÏ¸°û
-                # "Sox17",#¸ÎÍâµ¨¹Ü
+                # "Pecam1",#Ã‘ÂªÂ¹Ãœ
+                # "Gypa",#ÂºÃ¬ÃÂ¸Â°Ã»
+                # "Sox17",#Â¸ÃŽÃÃ¢ÂµÂ¨Â¹Ãœ
                 # "Sox9",#duct
                 # "Spp1",#duct
                 # "Rbpjl",#acinar
