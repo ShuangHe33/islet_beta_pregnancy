@@ -11,82 +11,69 @@ library(RColorBrewer)
 library(dplyr)
 library(rgl)
 library(scran)
-MyNorm.new=function(raw.data){
-  size.factor <- colSums(raw.data)/mean(colSums(raw.data))
-  norm.data <-  t(t(raw.data) / size.factor)
-  return(norm.data)
-}
+
 genes.inf.input <- MyReadDelim("G:/lab/gene inf/mm10/mm10.gene.inf.merge.v1.1.tab")
 rownames(genes.inf.input) <- genes.inf.input$SymbolDedu
 
 time.colors <- c("#4DAF4A",
-                 # "black",
-                 # "#F01414",
-                 # "#5F9EA0",#P21-2-B-con
                  "#FF7F00",
                  "#7570B3", 
-                 "#452cff",#G5.5
+                 "#452cff",
                  "#A65628", 
                  "#F781BF",
                  "#999999",
-                 "#ffe478",#P2-B
+                 "#ffe478",
                  "#cab2d6",
                  "#ba984d",
                  "#1f78b4",
-                 "#ff4a21",#P7-14-21,P21-B
+                 "#ff4a21",
                  "#752a78",
                  "#a6cee3",
                  "#53751c",
                  "#C71585",
                  "#F01414",
                  "#ff8e9d",
-                 "#234682",#G14.5-HFD,
-                 "#ff723f",#control culture for 4 days
-                 "#d96ca8",#preg culture for 4 days
-                 "#0f8575",#G18.5-KO
-                 "#5277cf",#Nif-unpreg-Ctrl
-                 "#de562c",#Nif-preg-Ctrl
-                 "#5a7368",#Nif-preg
-                 "#c77fc1",#C646-unpreg-Ctrl,
-                 "#3fa0a3",#C646-preg-Ctrl
-                 "#c7a96c",#C646-perg
-                 "#805e2b",#human serum ctrl
+                 "#234682",
+                 "#ff723f",
+                 "#d96ca8",
+                 "#0f8575",
+                 "#5277cf",
+                 "#de562c",
+                 "#5a7368",
+                 "#c77fc1",
+                 "#3fa0a3",
+                 "#c7a96c",
+                 "#805e2b",
                  "#F01414",
                  "#d15126",
-                 #"#6bff9c",#G14.5-2nd
-                 #"#5ce6ba"#,
-                 # "#39a866",#human serum preg
-                 "#6343c4"#human serum GDM
-                 
-                 
+                 "#6343c4"                             
 )
-marker.sym <- c("Spi1",#°×Ï¸°û
+marker.sym <- c("Spi1",
                 "Procr",
                 "Fcgr1",
-                "Neurod1",#endocrine
+                "Neurod1",
                 "Chga",
                 "Chgb",
                 "Prox1",
                 "Mki67",
-                "Col1a1",#mesenchymal
-                "Col5a1",#mesenchymal
-                "Col3a1",#mesenchymal
+                "Col1a1",
+                "Col5a1",
+                "Col3a1",
                 "Mgp",
                 "Esm1",
                 "Vim",
                 "Cdh11",
-                #"S100a4",
                 "Itga5",
                 "Sdc1",
-                "Pecam1",#Ñª¹Ü
-                "Gypa",#ºìÏ¸°û
-                "Sox17",#¸ÎÍâµ¨¹Ü
-                "Sox9",#duct
-                "Spp1",#duct
-                "Rbpjl",#acinar
-               # "Amy2b",#acinar
-                "Pnlip",#exo
-                "Ctrb1",#exo
+                "Pecam1",
+                "Gypa",
+                "Sox17",
+                "Sox9",
+                "Spp1",
+                "Rbpjl",
+                "Amy2b",
+                "Pnlip",
+                "Ctrb1",
                 "Prss1",
                 "Neurog3",
                 "Pax4",
@@ -108,9 +95,7 @@ marker.sym <- c("Spi1",#°×Ï¸°û
                 "Hhex",
                 "Kdr",
                 "Ascl1",
-                "Ptprc"
-                
-                
+                "Ptprc"  
 )
 
 ###################################################################
