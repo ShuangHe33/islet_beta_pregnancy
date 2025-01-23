@@ -3,3 +3,6 @@ The repository contains scripts for our study "ACSS2 mediates an epigenetic path
 
 ![image](https://github.com/ShuangHe33/islet_beta_pregnnacy/blob/main/graph_abstract.png)
 
+# Data Accessibility
+The CUT&RUN, ATAC-seq, and scRNA-seq data generated in this study have been deposited in the Gene Expression Omnibus (GEO) database under accession code GSE241776 [https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE241776]. 
+
