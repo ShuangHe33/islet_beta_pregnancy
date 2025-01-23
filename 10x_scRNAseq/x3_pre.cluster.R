@@ -1,6 +1,6 @@
 setwd('G:/project/pregnant_mouse/10x/10x_v3')
-dir.create('Ctl_G14.5_1st/')
-setwd('Ctl_G14.5_1st/')
+dir.create('Ctl_G14.5/')
+setwd('Ctl_G14.5/')
 load('pre.cluster.RData')
 load('beta.10x.DEG.RData')
 source("G:/pcatest/MyFunction.R")
@@ -18,7 +18,6 @@ colors.group <- c("#E08698",
                   "#41BAB0",
                   "#8D9AC6",
                   "#E579E5",
-                  # "black",
                   "#ff7f00",
                   "#6a3d9a",
                   "#e31a1c",
@@ -37,24 +36,22 @@ time.colors <- c("#4DAF4A",
                  "#752a78",
                  #"black",
                  "#F01414",
-                 "#5F9EA0",#P21-2-B-con
+                 "#5F9EA0",
                  "#FF7F00",
                  "#7570B3", 
-                 "#452cff",#G5.5
+                 "#452cff",
                  "#A65628", 
                  "#F781BF",
                  "#999999",
-                 #"#ffe478",#P2-B
                  "#cab2d6",
                  "#ba984d",
                  "#1f78b4",
-                 "#ff4a21",#P7-14-21,P21-B
+                 "#ff4a21",
                  "#752a78",
                  "#a6cee3",
                  "#53751c",
                  "#C71585",
                  "#d15126",
-                 #"#6bff9c",#G14.5-2nd
                  "#5ce6ba",
                  "#ff8e9d"
 )
@@ -67,36 +64,36 @@ preg.colors <- c("#4DAF4A",
                  "#F781BF"
 )
 
-names(preg.colors) <- c("Ctrl",
-                        "G14.5_1st")
+names(preg.colors) <- c("G0",
+                        "G14.5")
 MyPlotColor(preg.colors,length(preg.colors))
 
 
 colors.exp <- colorRampPalette(c("#0000FF","white","#FF0000"),
                                space="Lab")(50)
 ##########load data#########
-Ctrl.seu <- readRDS('../QC/src.duct.Ctrl.rds')
-Ctrl.seu.meta.tab <- MyReadDelim('../QC/ctrl.celltype.new.meta.data')
-#Ctrl.seu$SampleName <- paste0("Ctrl_20200416",Ctrl.seu$SampleName)
-#colnames(Ctrl.seu) <- Ctrl.seu$SampleName
-Ctrl.seu <- subset(Ctrl.seu,cells = Ctrl.seu.meta.tab$SampleName[!Ctrl.seu.meta.tab$cluster %in% c( 'Doublet/multi-hormone cell',
+G0.seu <- readRDS('../QC/src.duct.G0.rds')
+G0.seu.meta.tab <- MyReadDelim('../QC/G0.celltype.new.meta.data')
+G0.seu$SampleName <- paste0("G0_20200416",G0.seu$SampleName)
+colnames(G0.seu) <- G0.seu$SampleName
+G0.seu <- subset(G0.seu,cells = G0.seu.meta.tab$SampleName[!G0.seu.meta.tab$cluster %in% c( 'Doublet/multi-hormone cell',
                                                                                                    'Low quality cell')])
 
-G14.5_1st.seu <- readRDS('../QC/pre.seu.rds')
-G14.5_1st.seu.meta.tab <- MyReadDelim('../QC/G14.5_1st.celltype.new.meta.data')
-G14.5_1st.seu <- subset(G14.5_1st.seu,cells = G14.5_1st.seu.meta.tab$SampleName[G14.5_1st.seu.meta.tab$cluster != 'Doublet/multi-hormone cell'])
+G14.5.seu <- readRDS('../QC/pre.seu.rds')
+G14.5.seu.meta.tab <- MyReadDelim('../QC/G14.5.celltype.new.meta.data')
+G14.5.seu <- subset(G14.5.seu,cells = G14.5.seu.meta.tab$SampleName[G14.5.seu.meta.tab$cluster != 'Doublet/multi-hormone cell'])
 
-Ctrl.seu <- RenameCells(Ctrl.seu,new.names = paste0('Ctrl_20200416',colnames(Ctrl.seu)))
-G14.5_1st.seu <- RenameCells(G14.5_1st.seu,new.names = paste0('G14.5_1st_20200416',colnames(G14.5_1st.seu)))
+G0.seu <- RenameCells(G0.seu,new.names = paste0('G0_20200416',colnames(G0.seu)))
+G14.5.seu <- RenameCells(G14.5.seu,new.names = paste0('G14.5_20200416',colnames(G14.5.seu)))
 
-pre.seu <- merge(x=Ctrl.seu,
-                 y=G14.5_1st.seu
+pre.seu <- merge(x=G0.seu,
+                 y=G14.5.seu
                  )
-rm(Ctrl.seu)
-rm(G14.5_1st.seu)
+rm(G0.seu)
+rm(G14.5.seu)
 
 
-pre.seu <- readRDS('Ctl_G14.5_1st/pre.seu.rds')
+pre.seu <- readRDS('Ctl_G14.5/pre.seu.rds')
 
 mean(pre.seu$nCount_RNA)
 mean(pre.seu$nFeature_RNA)
@@ -282,7 +279,7 @@ print(p.plot+theme(aspect.ratio = 1))
 dev.off()
 
 ########marker########
-marker.sym <- c("Spi1",#°×Ï¸°û
+marker.sym <- c("Spi1",#Â°Ã—ÃÂ¸Â°Ã»
                 "Procr",
                 "Fcgr1",
                 "Neurod1",#endocrine
@@ -300,9 +297,9 @@ marker.sym <- c("Spi1",#°×Ï¸°û
                 #"S100a4",
                 "Itga5",
                 "Sdc1",
-                "Pecam1",#Ñª¹Ü
-                "Gypa",#ºìÏ¸°û
-                "Sox17",#¸ÎÍâµ¨¹Ü
+                "Pecam1",
+                "Gypa",
+                "Sox17",
                 "Sox9",#duct
                 "Spp1",#duct
                 "Rbpjl",#acinar
@@ -589,7 +586,7 @@ MyHeatmap(as.matrix(marker.meanexp.relative.tab),
 )
 dev.off()
 ########dot plot#######
-marker.meanexp.relative.tab <- readRDS('G:/project/pregnant_mouse/10x/10x_v3/Ctl_G14.5_1st/marker.meanexp.relative.tab.rds')
+marker.meanexp.relative.tab <- readRDS('G:/project/pregnant_mouse/10x/10x_v3/Ctl_G14.5/marker.meanexp.relative.tab.rds')
 
 pseudoexp.select.list <- list()
 
