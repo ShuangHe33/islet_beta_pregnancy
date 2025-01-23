@@ -4,5 +4,7 @@
 2.x1_preg.10v3.QC.R: QC for G0 and G14.5 data  
 3.x2_pre.cluster.R: cell type classification  
 4.x3_endocrine.cluster.R: endocrine cell classification  
+5.x4_beta.10x.v3.proliferating.R: proliferating and quiescnt beta cell identification
+6.
 
 
