@@ -101,30 +101,26 @@ marker.sym <- c("Spi1",
 ###################################################################
 #                          load
 ###################################################################
-load('rawdata/read.10x.CtrlG14.5_1stG14.5_2nd.RData')
-src.duct.Ctrl=CreateSeuratObject(src.raw.Ctrl)
-src.duct.G14.5_1st=CreateSeuratObject(src.raw.G14.5_1st)
-src.duct.G14.5_2nd=CreateSeuratObject(src.raw.G14.5_2nd)
-src.duct.Ctrl$Time="Ctrl"
-src.duct.G14.5_1st$Time="G14.5_1st"
-src.duct.G14.5_2nd$Time="G14.5_2nd"
+load('rawdata/read.10x.G0G14.5G14.5_2nd.RData')
+src.G0=CreateSeuratObject(src.raw.G0)
+src.G14.5=CreateSeuratObject(src.raw.G14.5)
 
-rm(src.raw.Ctrl)
-rm(src.raw.G14.5_1st)
-rm(src.raw.G14.5_2nd)
+src.G0$Time="G0"
+src.G14.5$Time="G14.5"
+
+
+rm(src.raw.G0)
+rm(src.raw.G14.5)
 
 ########################################################################
 #                            QC
 ########################################################################
-src.duct.Ctrl[["percent.mt"]] <- PercentageFeatureSet(src.duct.Ctrl, pattern = "^mt-")
-src.duct.G14.5_1st[["percent.mt"]] <- PercentageFeatureSet(src.duct.G14.5_1st, pattern = "^mt-")
-src.duct.G14.5_2nd[["percent.mt"]] <- PercentageFeatureSet(src.duct.G14.5_2nd, pattern = "^mt-")
-
+src.G0[["percent.mt"]] <- PercentageFeatureSet(src.G0, pattern = "^mt-")
+src.G14.5[["percent.mt"]] <- PercentageFeatureSet(src.G14.5, pattern = "^mt-")
 
 pdf('QC/features.pdf')
-for(seu in c("src.duct.Ctrl",
-             "src.duct.G14.5_1st",
-             "src.duct.G14.5_2nd"
+for(seu in c("src.G0",
+             "src.G14.5"
              )){
   hist(get(seu)$nFeature_RNA,
        1000,
@@ -150,9 +146,9 @@ print(seu)
 dev.off()
 
 
-for (seurat in c("src.duct.Ctrl",
-                 "src.duct.G14.5_1st",
-                 "src.duct.G14.5_2nd"
+for (seurat in c("src.G0",
+                 "src.G14.5"
+                 
                  )) {
   assign(seurat,
          NormalizeData(get(seurat),
@@ -190,9 +186,9 @@ for (seurat in c("src.duct.Ctrl",
 }
 
 
-for (seurat in c("src.duct.Ctrl",
-                 "src.duct.G14.5_1st",
-                 "src.duct.G14.5_2nd")){
+for (seurat in c("src.G0",
+                 "src.G14.5"
+                 )){
   png(paste('QC/',seurat,'.pre.var.heatmap.2000.png'),
       2000,3000)
   assign(paste(seurat,".row.tree",sep = ""),
@@ -214,16 +210,13 @@ for (seurat in c("src.duct.Ctrl",
 }
 
 
-VariableFeatures(src.duct.Ctrl) <- setdiff(VariableFeatures(src.duct.Ctrl),
-                                            c(labels(src.duct.Ctrl.row.tree[[2]][[2]][[2]][[2]][[2]][[1]])))
-VariableFeatures(src.duct.G14.5_1st) <- setdiff(VariableFeatures(src.duct.G14.5_1st),
-                                            c(labels(src.duct.G14.5_1st.row.tree[[2]][[2]][[1]][[2]])))
-VariableFeatures(src.duct.G14.5_2nd) <- setdiff(VariableFeatures(src.duct.G14.5_2nd),
-                                            c(labels(src.duct.G14.5_2nd.row.tree[[2]][[2]][[2]][[2]][[1]])))
+VariableFeatures(src.G0) <- setdiff(VariableFeatures(src.G0),
+                                            c(labels(src.G0.row.tree[[2]][[2]][[2]][[2]][[2]][[1]])))
+VariableFeatures(src.G14.5) <- setdiff(VariableFeatures(src.G14.5),
+                                            c(labels(src.G14.5.row.tree[[2]][[2]][[1]][[2]])))
 
-for (seurat in c(#"src.duct.Ctrl",
-                 "src.duct.G14.5_1st",
-                 "src.duct.G14.5_2nd"
+for (seurat in c("src.G0",
+                 "src.G14.5"
                 )) {
   assign(seurat,
          RunPCA(get(seurat), features = VariableFeatures(get(seurat))))
@@ -284,9 +277,9 @@ for (seurat in c(#"src.duct.Ctrl",
   
 }
 
-for (seurat in c(#"src.duct.Ctrl"#,
-                  "src.duct.G14.5_1st"#,
-                 # "src.duct.G14.5_2nd"
+for (seurat in c("src.G0",
+                  "src.G14.5"
+                
 )) {
 
 pdf(paste('QC/',seurat,".marker.pdf",sep = ""),6,7)
@@ -314,21 +307,21 @@ for (gene in c("nFeature_RNA",marker.sym)) {
 }
 
 #######################################################################
-src.duct.Ctrl@meta.data$SampleName <- rownames(src.duct.Ctrl@meta.data)
-src.duct.Ctrl@meta.data$cluster=as.character(src.duct.Ctrl@meta.data$RNA_snn_res.1.5)
-src.duct.Ctrl@meta.data[src.duct.Ctrl@meta.data$cluster%in%c(1,14,5,6,2,3,12,10,8),]$cluster="beta"
-src.duct.Ctrl@meta.data[src.duct.Ctrl@meta.data$cluster%in%c(0),]$cluster="alpha"
-src.duct.Ctrl@meta.data[src.duct.Ctrl@meta.data$cluster%in%c(9),]$cluster="pp"
-src.duct.Ctrl@meta.data[src.duct.Ctrl@meta.data$cluster%in%c(7),]$cluster="delta"
-src.duct.Ctrl@meta.data[src.duct.Ctrl@meta.data$cluster%in%c(4),]$cluster="Endothelial cell"
-src.duct.Ctrl@meta.data[src.duct.Ctrl@meta.data$cluster%in%c(15,19,20,22),]$cluster="Immune cell"
-src.duct.Ctrl@meta.data[src.duct.Ctrl@meta.data$cluster%in%c(16,17),]$cluster="Mesenchymal cell"
-src.duct.Ctrl@meta.data[src.duct.Ctrl@meta.data$cluster%in%c(18),]$cluster="Duct cell"
-src.duct.Ctrl@meta.data[src.duct.Ctrl@meta.data$cluster%in%c(21,11,23,13)|
-                           src.duct.Ctrl@meta.data$pANNPredictions=="Doublet",]$cluster="Doublet/multi-hormone cell"
+src.G0@meta.data$SampleName <- rownames(src.G0@meta.data)
+src.G0@meta.data$cluster=as.character(src.G0@meta.data$RNA_snn_res.1.5)
+src.G0@meta.data[src.G0@meta.data$cluster%in%c(1,14,5,6,2,3,12,10,8),]$cluster="beta"
+src.G0@meta.data[src.G0@meta.data$cluster%in%c(0),]$cluster="alpha"
+src.G0@meta.data[src.G0@meta.data$cluster%in%c(9),]$cluster="pp"
+src.G0@meta.data[src.G0@meta.data$cluster%in%c(7),]$cluster="delta"
+src.G0@meta.data[src.G0@meta.data$cluster%in%c(4),]$cluster="Endothelial cell"
+src.G0@meta.data[src.G0@meta.data$cluster%in%c(15,19,20,22),]$cluster="Immune cell"
+src.G0@meta.data[src.G0@meta.data$cluster%in%c(16,17),]$cluster="Mesenchymal cell"
+src.G0@meta.data[src.G0@meta.data$cluster%in%c(18),]$cluster="Duct cell"
+src.G0@meta.data[src.G0@meta.data$cluster%in%c(21,11,23,13)|
+                           src.G0@meta.data$pANNPredictions=="Doublet",]$cluster="Doublet/multi-hormone cell"
 
 
-src.duct.Ctrl@meta.data$cluster <- factor(src.duct.Ctrl@meta.data$cluster,
+src.G0@meta.data$cluster <- factor(src.G0@meta.data$cluster,
                                           levels = c('beta',
                                                      'alpha',
                                                      'delta',
@@ -341,22 +334,22 @@ src.duct.Ctrl@meta.data$cluster <- factor(src.duct.Ctrl@meta.data$cluster,
                                                      'Low quality cell'))
 
 
-pp.meta.data <- MyReadDelim('Ctrl_endo/pp/pp.gcgpp.meta.tab')
+pp.meta.data <- MyReadDelim('G0_endo/pp/pp.gcgpp.meta.tab')
 rownames(pp.meta.data) <- pp.meta.data$SampleName
 
-sum(pp.meta.data[pp.meta.data$group == 'Gcg;Ppy','SampleName'] %in% src.duct.Ctrl$SampleName[src.duct.Ctrl$RNA_snn_res.3 == 21])
+sum(pp.meta.data[pp.meta.data$group == 'Gcg;Ppy','SampleName'] %in% src.G0$SampleName[src.G0$RNA_snn_res.3 == 21])
 
-src.duct.Ctrl@meta.data[pp.meta.data[pp.meta.data$group == 'Gcg;Ppy','SampleName'],'cluster'] <- "Doublet/multi-hormone cell"
+src.G0@meta.data[pp.meta.data[pp.meta.data$group == 'Gcg;Ppy','SampleName'],'cluster'] <- "Doublet/multi-hormone cell"
 
-beta.low.quality.tab <- MyReadDelim('Ctrl_endo/beta.low.quality.cell.tab')
-src.duct.Ctrl@meta.data$cluster <- as.character(src.duct.Ctrl@meta.data$cluster)
+beta.low.quality.tab <- MyReadDelim('G0_endo/beta.low.quality.cell.tab')
+src.G0@meta.data$cluster <- as.character(src.G0@meta.data$cluster)
 
-src.duct.Ctrl@meta.data[beta.low.quality.tab$x,'cluster'] <- "Low quality cell"
+src.G0@meta.data[beta.low.quality.tab$x,'cluster'] <- "Low quality cell"
 
 
 
-p.tsne <- MySeuratv3TSNE10x2Gg(src.duct.Ctrl,
-                               src.duct.Ctrl@meta.data
+p.tsne <- MySeuratv3TSNE10x2Gg(src.G0,
+                               src.G0@meta.data
                                #pp.meta.data
                                )
 p.age <- p.tsne+
@@ -386,7 +379,7 @@ p.age <- p.tsne+
                               order = 2,
                               ncol = 1))
 
-pdf("QC/ctrl.tsne.cellType.pc30.rmGcgPpy.rmbetalowquality.pdf",
+pdf("QC/G0.tsne.cellType.pc30.rmGcgPpy.rmbetalowquality.pdf",
     19,
     10)
 p.plot <- p.age +
@@ -402,18 +395,18 @@ p.plot <- p.age +
 print(p.plot)
 dev.off()
 
-src.duct.G14.5_1st <- SetIdent(src.duct.G14.5_1st,value = src.duct.G14.5_1st$RNA_snn_res.1.5)
-src.duct.G14.5_1st.res1.5.marker.res <- FindMarkers(src.duct.G14.5_1st,
+src.G14.5 <- SetIdent(src.G14.5,value = src.G14.5$RNA_snn_res.1.5)
+src.G14.5.res1.5.marker.res <- FindMarkers(src.G14.5,
                                                     ident.1 = 19,
                                                     ident.2 = c(1,2,5,6,8,9,3,11,14)
 )
 
-res0.15.19.marker <- src.duct.G14.5_1st.res1.5.marker.res[src.duct.G14.5_1st.res1.5.marker.res$avg_logFC > 1 &
-                                                            src.duct.G14.5_1st.res1.5.marker.res$p_val_adj < 10^-5 ,]
+res0.15.19.marker <- src.G14.5.res1.5.marker.res[src.G14.5.res1.5.marker.res$avg_logFC > 1 &
+                                                            src.G14.5.res1.5.marker.res$p_val_adj < 10^-5 ,]
 
 rownames(res0.15.19.marker)
 
-seurat <- 'src.duct.G14.5_1st'
+seurat <- 'src.G14.5'
 pdf(paste('QC/',seurat,"res0.15.19.marker.pdf",sep = ""),6,7)
 for (gene in rownames(res0.15.19.marker)) {
   print(FeaturePlot(get(seurat),gene,cols = c("#C7E8CC","#FF0000"))+
@@ -437,23 +430,23 @@ for (gene in rownames(res0.15.19.marker)) {
 }
 dev.off()
 
-src.duct.G14.5_1st@meta.data$SampleName <-  rownames(src.duct.G14.5_1st@meta.data)
+src.G14.5@meta.data$SampleName <-  rownames(src.G14.5@meta.data)
 
-#src.duct.G14.5_1st@meta.data$SampleName <-  paste0("G14.5_1st_20200416",rownames(src.duct.G14.5_1st@meta.data))
-src.duct.G14.5_1st@meta.data$cluster=as.character(src.duct.G14.5_1st@meta.data$RNA_snn_res.1.5)
-src.duct.G14.5_1st@meta.data[src.duct.G14.5_1st@meta.data$cluster%in%c(1,2,5,6,8,9,3,11,14),]$cluster="beta"
-src.duct.G14.5_1st@meta.data[src.duct.G14.5_1st@meta.data$cluster%in%c(0),]$cluster="alpha"
-src.duct.G14.5_1st@meta.data[src.duct.G14.5_1st@meta.data$cluster%in%c(12),]$cluster="pp"
-src.duct.G14.5_1st@meta.data[src.duct.G14.5_1st@meta.data$cluster%in%c(7),]$cluster="delta"
-src.duct.G14.5_1st@meta.data[src.duct.G14.5_1st@meta.data$cluster%in%c(4),]$cluster="Endothelial cell"
-src.duct.G14.5_1st@meta.data[src.duct.G14.5_1st@meta.data$cluster%in%c(15,20),]$cluster="Immune cell"
-src.duct.G14.5_1st@meta.data[src.duct.G14.5_1st@meta.data$cluster%in%c(13,17),]$cluster="Mesenchymal cell"
-src.duct.G14.5_1st@meta.data[src.duct.G14.5_1st@meta.data$cluster%in%c(21),]$cluster="Duct cell"
-src.duct.G14.5_1st@meta.data[src.duct.G14.5_1st@meta.data$cluster%in%c(16,10,18,22,19,23)|
-                               src.duct.G14.5_1st@meta.data$pANNPredictions=="Doublet",]$cluster="Doublet/multi-hormone cell"
+#src.G14.5@meta.data$SampleName <-  paste0("G14.5_20200416",rownames(src.G14.5@meta.data))
+src.G14.5@meta.data$cluster=as.character(src.G14.5@meta.data$RNA_snn_res.1.5)
+src.G14.5@meta.data[src.G14.5@meta.data$cluster%in%c(1,2,5,6,8,9,3,11,14),]$cluster="beta"
+src.G14.5@meta.data[src.G14.5@meta.data$cluster%in%c(0),]$cluster="alpha"
+src.G14.5@meta.data[src.G14.5@meta.data$cluster%in%c(12),]$cluster="pp"
+src.G14.5@meta.data[src.G14.5@meta.data$cluster%in%c(7),]$cluster="delta"
+src.G14.5@meta.data[src.G14.5@meta.data$cluster%in%c(4),]$cluster="Endothelial cell"
+src.G14.5@meta.data[src.G14.5@meta.data$cluster%in%c(15,20),]$cluster="Immune cell"
+src.G14.5@meta.data[src.G14.5@meta.data$cluster%in%c(13,17),]$cluster="Mesenchymal cell"
+src.G14.5@meta.data[src.G14.5@meta.data$cluster%in%c(21),]$cluster="Duct cell"
+src.G14.5@meta.data[src.G14.5@meta.data$cluster%in%c(16,10,18,22,19,23)|
+                               src.G14.5@meta.data$pANNPredictions=="Doublet",]$cluster="Doublet/multi-hormone cell"
 
 
-src.duct.G14.5_1st@meta.data$cluster <- factor(src.duct.G14.5_1st@meta.data$cluster,
+src.G14.5@meta.data$cluster <- factor(src.G14.5@meta.data$cluster,
                                                levels = c('beta',
                                                           'alpha',
                                                           'delta',
@@ -464,15 +457,15 @@ src.duct.G14.5_1st@meta.data$cluster <- factor(src.duct.G14.5_1st@meta.data$clus
                                                           'Duct cell',
                                                           'Doublet/multi-hormone cell'))
 
-table(src.duct.G14.5_1st@meta.data$cluster)
+table(src.G14.5@meta.data$cluster)
 
-src.duct.G14.5_1st@meta.data$cluster <- as.character(src.duct.G14.5_1st@meta.data$cluster)
-G14.5_1st.pp.gcg.cell <- MyReadDelim('G14.5_1st_endo/rmcc/pp.Gcg.cell.tab')
-src.duct.G14.5_1st@meta.data[G14.5_1st.pp.gcg.cell$x,'cluster'] <- 'Doublet/multi-hormone cell'
+src.G14.5@meta.data$cluster <- as.character(src.G14.5@meta.data$cluster)
+G14.5.pp.gcg.cell <- MyReadDelim('G14.5_endo/rmcc/pp.Gcg.cell.tab')
+src.G14.5@meta.data[G14.5.pp.gcg.cell$x,'cluster'] <- 'Doublet/multi-hormone cell'
 
 
-p.tsne <- MySeuratv3TSNE10x2Gg(src.duct.G14.5_1st,
-                               src.duct.G14.5_1st@meta.data
+p.tsne <- MySeuratv3TSNE10x2Gg(src.G14.5,
+                               src.G14.5@meta.data
                                #pp.meta.data
 )
 p.age <- p.tsne+
@@ -502,7 +495,7 @@ p.age <- p.tsne+
                               order = 2,
                               ncol = 1))
 
-pdf("QC/rmppGcgG14.5_1st.tsne.cellType.pc30.pdf",
+pdf("QC/rmppGcgG14.5.tsne.cellType.pc30.pdf",
     19,
     10)
 p.plot <- p.age +
@@ -517,134 +510,15 @@ p.plot <- p.age +
 
 print(p.plot)
 dev.off()
+##write out########
+MyWriteTable(src.G0@meta.data,
+             'QC/G0.celltype.new.meta.data')
+saveRDS(src.G0,
+        'QC/src.G0.rds')
 
-src.duct.G14.5_2nd <- SetIdent(src.duct.G14.5_2nd,value = src.duct.G14.5_2nd$RNA_snn_res.1.5)
-src.duct.G14.5_2nd.res1.5.marker.res <- FindMarkers(src.duct.G14.5_2nd,
-                                                    ident.1 = 19,
-                                                    ident.2 = c(1,2,5,6,8,9,3,11,14)
-)
-
-res0.15.19.marker <- src.duct.G14.5_2nd.res1.5.marker.res[src.duct.G14.5_2nd.res1.5.marker.res$avg_logFC > 1 &
-                                                            src.duct.G14.5_2nd.res1.5.marker.res$p_val_adj < 10^-5 ,]
-
-rownames(res0.15.19.marker)
-
-seurat <- 'src.duct.G14.5_2nd'
-pdf(paste('QC/',seurat,"res0.15.19.marker.pdf",sep = ""),6,7)
-for (gene in rownames(res0.15.19.marker)) {
-  print(FeaturePlot(get(seurat),gene,cols = c("#C7E8CC","#FF0000"))+
-          theme(plot.title = element_text(size = rel(3.5))) +
-          theme(plot.title = element_text(hjust = 0.5)) +
-          theme(axis.title = element_blank()) +
-          theme(axis.text  = element_blank()) +
-          theme(axis.ticks = element_blank()) +
-          theme(legend.position="bottom")+
-          theme(panel.border = element_rect(size = 4,
-                                            colour = "black"))+
-          guides(colour = guide_colorbar(title = "ln(TP10K + 1)",
-                                         title.position = "top",
-                                         barwidth = 27,
-                                         title.hjust = 0.5,
-                                         title.theme = element_text(angle = 0,
-                                                                    size = 20),
-                                         label.theme = element_text(angle = 0,
-                                                                    size = 20),
-                                         ticks = T)) )
-}
-dev.off()
-
-
-src.duct.G14.5_2nd@meta.data$SampleName <-  paste0("G14.5_2nd_20200308",rownames(src.duct.G14.5_2nd@meta.data))
-src.duct.G14.5_2nd@meta.data$cluster=as.character(src.duct.G14.5_2nd@meta.data$RNA_snn_res.3)
-src.duct.G14.5_2nd@meta.data[src.duct.G14.5_2nd@meta.data$cluster%in%c(19,7,5,8,10,3,9,0,18,16,30,6,14,1,21,15,22),]$cluster="beta"
-src.duct.G14.5_2nd@meta.data[src.duct.G14.5_2nd@meta.data$cluster%in%c(17,12,13,25),]$cluster="alpha"
-src.duct.G14.5_2nd@meta.data[src.duct.G14.5_2nd@meta.data$cluster%in%c(11),]$cluster="pp"
-src.duct.G14.5_2nd@meta.data[src.duct.G14.5_2nd@meta.data$cluster%in%c(4),]$cluster="delta"
-src.duct.G14.5_2nd@meta.data[src.duct.G14.5_2nd@meta.data$cluster%in%c(2),]$cluster="Endothelial cell"
-src.duct.G14.5_2nd@meta.data[src.duct.G14.5_2nd@meta.data$cluster%in%c(24),]$cluster="Immune cell"
-src.duct.G14.5_2nd@meta.data[src.duct.G14.5_2nd@meta.data$cluster%in%c(29,23),]$cluster="Mesenchymal cell"
-#src.duct.G14.5_2nd@meta.data[src.duct.G14.5_2nd@meta.data$cluster%in%c(21),]$cluster="Duct cell"
-src.duct.G14.5_2nd@meta.data[src.duct.G14.5_2nd@meta.data$cluster%in%c(20,27,28,32,31,26)|
-                               src.duct.G14.5_2nd@meta.data$pANNPredictions=="Doublet",]$cluster="Doublet/multi-hormone cell"
-
-
-G14.5_2nd.doublet.tab <- MyReadDelim('G14.5_2nd_endo/G14.5_2nd.Immunedoublet.tab')
-
-src.duct.G14.5_2nd@meta.data[G14.5_2nd.doublet.tab$x,'cluster'] <- 'Doublet/multi-hormone cell'
-
-
-
-src.duct.G14.5_2nd@meta.data$cluster <- factor(src.duct.G14.5_2nd@meta.data$cluster,
-                                               levels = c('beta',
-                                                          'alpha',
-                                                          'delta',
-                                                          'pp',
-                                                          'Endothelial cell',
-                                                          'Immune cell',
-                                                          'Mesenchymal cell',
-                                                          # 'Duct cell',
-                                                          'Doublet/multi-hormone cell'))
-
-p.tsne <- MySeuratv3TSNE10x2Gg(src.duct.G14.5_2nd,
-                               src.duct.G14.5_2nd@meta.data
-                               #pp.meta.data
-)
-p.age <- p.tsne+
-  #scale_y_reverse() +
-  scale_color_manual(values = time.colors) +
-  #scale_shape_manual(values = shape.group) +
-  guides(colour = guide_legend(title = "",
-                               order = 1)) +
-  theme(axis.text = element_text(size = 20, colour = "black")) +
-  theme(axis.title.x = element_text(size = 40, colour = "black")) +
-  theme(axis.title.y = element_text(size = 40, colour = "black")) +
-  theme(legend.text = element_text(size = 45, colour = "black")) +
-  theme(legend.title = element_text(size = 45, colour = "black")) +
-  theme(panel.border = element_rect(size = 4,
-                                    colour = "black")) +
-  theme(legend.key = element_blank()) +
-  guides(colour = guide_legend(title = "",
-                               keywidth = 3,
-                               keyheight = 3,
-                               override.aes = list(size = 12),
-                               order = 1,
-                               ncol = 1)) +
-  guides(shape = guide_legend(title = "",
-                              keywidth = 3,
-                              keyheight = 3,
-                              override.aes = list(size = 12),
-                              order = 2,
-                              ncol = 1))
-
-pdf("QC/G14.5_2nd.tsne.cellType.pc30.new.pdf",
-    19,
-    10)
-p.plot <- p.age +
-  scale_color_manual(values = time.colors[c(1:7,9)]) +
-  geom_point(aes(x = x.pos,
-                 y = y.pos,
-                 col =cluster#,
-                 #shape = State
-  ),
-  size = 1
-  )
-
-print(p.plot)
-dev.off()
-
-MyWriteTable(src.duct.Ctrl@meta.data,
-             'QC/ctrl.celltype.new.meta.data')
-saveRDS(src.duct.Ctrl,
-        'QC/src.duct.Ctrl.rds')
-
-MyWriteTable(src.duct.G14.5_1st@meta.data,
-             'QC/G14.5_1st.celltype.new.meta.data')
-saveRDS(src.duct.G14.5_1st,
-        'QC/src.duct.G14.5_1st.rds')
-
-MyWriteTable(src.duct.G14.5_2nd@meta.data,
-             'QC/G14.5_2nd.celltype.new.meta.data')
-saveRDS(src.duct.G14.5_2nd,
-        'QC/src.duct.G14.5_2nd.rds')
+MyWriteTable(src.G14.5@meta.data,
+             'QC/G14.5.celltype.new.meta.data')
+saveRDS(src.G14.5,
+        'QC/src.G14.5.rds')
 
 save.image('QC/pre.QC.RData')
