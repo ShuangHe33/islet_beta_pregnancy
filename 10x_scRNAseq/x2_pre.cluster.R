@@ -72,14 +72,14 @@ MyPlotColor(preg.colors,length(preg.colors))
 colors.exp <- colorRampPalette(c("#0000FF","white","#FF0000"),
                                space="Lab")(50)
 ##########load data#########
-G0.seu <- readRDS('../QC/src.duct.G0.rds')
+G0.seu <- readRDS('../QC/src.G0.rds')
 G0.seu.meta.tab <- MyReadDelim('../QC/G0.celltype.new.meta.data')
 G0.seu$SampleName <- paste0("G0_20200416",G0.seu$SampleName)
 colnames(G0.seu) <- G0.seu$SampleName
 G0.seu <- subset(G0.seu,cells = G0.seu.meta.tab$SampleName[!G0.seu.meta.tab$cluster %in% c( 'Doublet/multi-hormone cell',
                                                                                                    'Low quality cell')])
 
-G14.5.seu <- readRDS('../QC/pre.seu.rds')
+G14.5.seu <- readRDS('../QC/src.G14.5.rds')
 G14.5.seu.meta.tab <- MyReadDelim('../QC/G14.5.celltype.new.meta.data')
 G14.5.seu <- subset(G14.5.seu,cells = G14.5.seu.meta.tab$SampleName[G14.5.seu.meta.tab$cluster != 'Doublet/multi-hormone cell'])
 
