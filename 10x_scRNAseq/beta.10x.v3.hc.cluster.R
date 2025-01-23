@@ -139,7 +139,7 @@ table(seu.beta$knn.proliferative,seu.beta$hc.proliferative)
 ###########
 seu.beta <- RunPCA(seu.beta,features = beta.pre.cc.sym)
 Myseuratmarker(seu.beta,marker.sym = c('Mki67','Cdt1','Gmnn'),reduction = 'pca')
-setwd('G:/lab/Article/heshuang/BYLW/10x/')
+
 pdf('knn.hc.pc12.proliferative.pdf',13,12)
 p.pca <- MySeuratDR2Gg2(seu.beta,seu.beta@meta.data,
                         reduction.use = 'pca',reduction.key = 'PC',estimate.variation.explain.percentage = T)
