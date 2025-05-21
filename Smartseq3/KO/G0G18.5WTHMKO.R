@@ -120,32 +120,7 @@ VariableFeatures(seu.ref.KO.list2$G0G18.5Acss2WTHMKO.WT) <- setdiff(VariableFeat
                                                                                                                                labels(as.dendrogram(vst.row.tree2$G0G18.5Acss2WTHMKO.WT)[[1]][[2]][[2]][[1]])
                                                                                                                                ))
 
-# VariableFeatures(seu.ref.KO.list2$G0G14.5P300WTHMKO) <- setdiff(VariableFeatures(seu.ref.KO.list2$G0G14.5P300WTHMKO),c(
-#   labels(as.dendrogram(vst.row.tree2$G0G14.5P300WTHMKO)[[1]])))
-# 
-# VariableFeatures(seu.ref.KO.list2$G0G18.5Acss2WTHMKO) <- setdiff(VariableFeatures(seu.ref.KO.list2$G0G18.5Acss2WTHMKO),c(
-#   labels(as.dendrogram(vst.row.tree2$G0G18.5Acss2WTHMKO)[[2]][[1]])))
-# 
-# VariableFeatures(seu.ref.KO.list2$G0G18.5Stat3WTHMKO) <- setdiff(VariableFeatures(seu.ref.KO.list2$G0G18.5Stat3WTHMKO),c(
-#   labels(as.dendrogram(vst.row.tree2$G0G18.5Stat3WTHMKO)[[2]][[1]]),
-#   labels(as.dendrogram(vst.row.tree2$G0G18.5Stat3WTHMKO)[[2]][[2]][[2]][[1]])
-#   ))
-# 
-# VariableFeatures(seu.ref.KO.list2$ref.Acss2) <- setdiff(VariableFeatures(seu.ref.KO.list2$ref.Acss2),c(
-#   labels(as.dendrogram(vst.row.tree2$ref.Acss2)[[1]])))
-# 
-# VariableFeatures(seu.ref.KO.list2$G0G14.5G18.5Acss2WTHMKO) <- setdiff(VariableFeatures(seu.ref.KO.list2$G0G14.5G18.5Acss2WTHMKO),c(
-#   labels(as.dendrogram(vst.row.tree2$G0G14.5G18.5Acss2WTHMKO)[[1]])))
-# 
-# VariableFeatures(seu.ref.KO.list2$G0G14.5G18.5Acss2WTHMKO) <- c(VariableFeatures(seu.ref.KO.list2$G0G14.5G18.5Acss2WTHMKO),
-#                                                                 labels(as.dendrogram(vst.row.tree2$G0G14.5G18.5Acss2WTHMKO)[[1]])
-#                                                                 )
-# 
-# VariableFeatures(seu.ref.KO.list2$G0G14.5G18.5Acss2WTHMKO_2) <- setdiff(VariableFeatures(seu.ref.KO.list2$G0G14.5G18.5Acss2WTHMKO_2),c(
-#   labels(as.dendrogram(vst.row.tree2$G0G14.5G18.5Acss2WTHMKO_2)[[1]])))
-# 
-# VariableFeatures(seu.ref.KO.list2$sub.ref.G0G14.5G18.5Acss2) <- setdiff(VariableFeatures(seu.ref.KO.list2$sub.ref.G0G14.5G18.5Acss2),c(
-#   labels(as.dendrogram(vst.row.tree2$sub.ref.G0G14.5G18.5Acss2)[[1]])))
+
 ###########
 cc.col.tree.list <- list()
 for (seu in names(seu.ref.KO.list2)[c(1)]) {
@@ -262,28 +237,12 @@ DEG.tab <- MyReadDelim('../../../../../beta/20221203/Glut2H/cluster/marker/Glut2
 
 for(seu in names(seu.ref.KO.list2)[4:6]){
   seu.ref.KO.list2[[seu]] <- ScaleData(seu.ref.KO.list2[[seu]],features = rownames(Vbeta.var.co15.list2[[seu]]))
- # seu.ref.KO.list2[[seu]] <- RunPCA(seu.ref.KO.list2[[seu]],features = c(rownames(Vbeta.var.co15.list2[[seu]]),labels(as.dendrogram(vst.row.tree2$G0G18.5Acss2WTHMKO)[[2]][[1]])))
- # seu.ref.KO.list2[[seu]] <- ScaleData(seu.ref.KO.list2[[seu]],features = rownames(Vbeta.var.co15.list2[[seu]]))
- seu.ref.KO.list2[[seu]] <- RunPCA(seu.ref.KO.list2[[seu]],features = c(rownames(Vbeta.var.co15.list2[[seu]])))
- # 
- #  
-  # seu.ref.KO.list2[[seu]] <- ScaleData(seu.ref.KO.list2[[seu]],features = VariableFeatures(seu.ref.KO.list2[[seu]]))
-   #seu.ref.KO.list2[[seu]] <- RunPCA(seu.ref.KO.list2[[seu]],features = VariableFeatures(seu.ref.KO.list2[[seu]]))
-  # 
-  
-  # seu.ref.KO.list2[[seu]] <- ScaleData(seu.ref.KO.list2[[seu]],features = c(VariableFeatures(seu.ref.KO.list2[[seu]]),labels(as.dendrogram(vst.row.tree2$G0G18.5Acss2WTHMKO)[[2]][[1]])))
-  # seu.ref.KO.list2[[seu]] <- RunPCA(seu.ref.KO.list2[[seu]],features = c(VariableFeatures(seu.ref.KO.list2[[seu]]),labels(as.dendrogram(vst.row.tree2$G0G18.5Acss2WTHMKO)[[2]][[1]])))
-  # 
+
   pc.use <- 1:6;#cor0.15
   seu.ref.KO.list2[[seu]] <- FindNeighbors(seu.ref.KO.list2[[seu]], dims = pc.use)
   seu.ref.KO.list2[[seu]] <- FindClusters(seu.ref.KO.list2[[seu]], resolution = 1.2)
   seu.ref.KO.list2[[seu]] <- RunUMAP(seu.ref.KO.list2[[seu]],dims = pc.use)
-  # 
-  # # seu.ref.KO.list2[[seu]] <- RunTSNE(seu.ref.KO.list2[[seu]],
-  # #                                   dims = pc.use,
-  # #                                   perplexity= round((30+ncol(seu.ref.KO.list2[[seu]])/100)),
-  # #                                   check_duplicates = F)
-  # 
+
   pdf(paste(seu,'pc6.res1.2.submarker.umap.WT.pdf',sep = ''),
        6,7)
   seu.ref.KO.list2[[seu]] <-
@@ -368,42 +327,6 @@ for(seu in names(seu.ref.KO.list2)[2:3]){
   p.pca$data <- p.pca$data_[order(p.pca$data_$Type_),]
   
 
-  # p.pca$data_ <- p.pca$data
-  # p.pca$data_$Type_ <- p.pca$data_$heter.group.merge
-  # p.pca$data_$Type_ <- factor(p.pca$data_$Type_,levels = c('beta3','beta2','beta1'))
-  # p.pca$data <- p.pca$data_[order(p.pca$data_$Type_),]
-  # 
-  # 
-  # plot(p.pca+
-  #        scale_color_manual(values = c(time.colors[c(1,2,15,12)])) +
-  #        scale_shape_manual(values = c(17,19))+
-  #        geom_point(aes(x = -x.pos,
-  #                       y = -y.pos,
-  #                       col = Type,
-  #                       shape = proliferation
-  #        ),
-  #        size = 3
-  #        )+theme(aspect.ratio = 1))
-  
-  # plot(p.pca+
-  #        scale_color_manual(values = c(group.col,ko.time.col[names(table(seu.ref.KO.list2[[seu]]$Type))[4:5]])) +
-  #        geom_point(aes(x = -x.pos,
-  #                       y = y.pos,
-  #                       col = heter.group#,
-  #                       # shape = State
-  #        ),
-  #        size = 4
-  #        )+theme(aspect.ratio = 1))
-  
-  # plot(p.pca+
-  #        scale_color_manual(values = c('gray90',time.colors)) +
-  #        geom_point(aes(x = -x.pos,
-  #                       y = y.pos,
-  #                       col = KOtype#,
-  #                       # shape = State
-  #        ),
-  #        size = 4
-  #        )+theme(aspect.ratio = 1))
   
 
   plot(p.pca+
@@ -427,31 +350,7 @@ saveRDS(seu.ref.KO.list2,'seu.ref.KO.list2.rds')
 rm(seu.ref.KO.list2)
 save.image('KOdirect.RData')
 
-########
-# library(rgl)
-# library(plotly)
-# library(igraph)
-# plot3d(x=seu.ref.KO.list2[[seu]]@reductions$pca@cell.embeddings[,1],
-#        y=seu.ref.KO.list2[[seu]]@reductions$pca@cell.embeddings[,2],
-#        z=seu.ref.KO.list2[[seu]]@reductions$pca@cell.embeddings[,3],
-#        xlab='PC1',ylab='PC2',zlab='PC3',
-#        size = 5,
-#        col=MyName2Col(seu.ref.KO.list2[[seu]]$Type_rep,
-#                       c(time.colors)))
-# set.seed(5)
-# graph.list <- list()
-# graph.list[[seu]] = graph.adjacency(as.matrix(seu.ref.KO.list2[[seu]]@graphs$RNA_snn),mode = "undirected",weighted = T)
-# layout.3d = layout_with_fr(graph.list[[seu]],dim = 3)
-# 
-# pan.data.par3d <- par3d()
-# open3d(zoom = pan.data.par3d$zoom, userMatrix = pan.data.par3d$userMatrix, windowRect = pan.data.par3d$windowRect)
-# 
-# size.point <- 5
-# plot3d(layout.3d,
-#        # aspect = 'iso',
-#        xlab='FDL1',ylab='FDL2',zlab='FDL3',
-#        size = size.point,
-#        col = time.colors[seu.ref.KO.list2[[seu]]@meta.data$Type])
+
 ######pseudotime#######
 for(seu in names(seu.ref.KO.list2)[1:3]){
   print(seu)
