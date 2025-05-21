@@ -1,7 +1,3 @@
-dir.create('G:/project/pregnant_mouse/chromatin/H3K27ac/HFD/G14.5Acss2HMKO/20221114/WTG0HFDG14.5CDHFD/')
-setwd('G:/project/pregnant_mouse/chromatin/H3K27ac/HFD/G14.5Acss2HMKO/20221114/WTG0HFDG14.5CDHFD/')
-load('H3K27ac.RData')
-saveRDS(list.close,'list.close.rds')
 
 source('G:/pcatest/MyFunction.R')
 source("G:/r script/file_function.R")
