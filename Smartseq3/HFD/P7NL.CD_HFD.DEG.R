@@ -1,8 +1,6 @@
 setwd('../')
 dir.create('DEG')
 DEG.list <- list()
-gene.input <- readRDS('G:/project/pregnant_mouse/beta/sm3/ref/new_sm3/ref_final/beta/Glut2H/ges/gene.input.exp2.10.rds')
-
 seu.beta <- SetIdent(seu.beta,value = seu.beta$Type)
 DEG.list[['P7NL']] <- Myseufindmarker(seu.beta,gene.include = gene.input,ident.1 = 'P7NL',ident.2 = 'P7NL_HFD',c1 = 'P7NL',c2 = 'P7NL_HFD')
 DEG.list[['Virgin_30HFD']] <- Myseufindmarker(seu.beta,gene.include = gene.input,ident.1 = 'Virgin',ident.2 = 'Virgin_30HFD',c1 = 'Virgin',c2 = 'Virgin_30HFD')
