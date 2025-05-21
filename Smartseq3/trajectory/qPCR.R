@@ -1,10 +1,8 @@
 ###########qPCR#########
 source("G:/pcatest/MyFunction.R")
-setwd("G:/weekly report2/pregnant/Figure/qPCR/")
-load("qPCR.ovol2.RData")
 
-qPCR.tab <- read.csv("Ovol2.sc.qPCR.csv")
-qPCR.tab <- qPCR.tab[,c(1:3)]
+
+
 qPCR.tab$Treatment <- factor(qPCR.tab$Treatment,
                              levels = c("P21-ctrl",
                                         "G14.5"))
@@ -49,7 +47,7 @@ for(j in c('Pdx1','Nkx6.1','Mlxipl')){
 }
 dev.off()
 
-setwd('G:/lab/Article/heshuang/BYLW/sm3/ref/')
+
 
 pdf("Ovol2.q.pdf",
     15,15)
