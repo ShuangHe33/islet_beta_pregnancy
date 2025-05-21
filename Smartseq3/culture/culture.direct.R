@@ -1,9 +1,3 @@
-dir.create('direct')
-dir.create('direct/20221120/')
-setwd('G:/project/pregnant_mouse/beta/sm3/ref/new_sm3/ref_final/KO/project/20220913/direct/20221120/')
-load('direct.20230704.RData')
-load('direct.20221120.RData')
-load('direct.20230606.RData')
 
 preg.c1.gene <- sub('_','-',preg.gene.si.tab$SymbolDedu[preg.gene.si.tab$cluster=='cc'])
 
@@ -234,38 +228,15 @@ seu.vitro.nor.list[[seu]] <- ScaleData(seu.vitro.nor.list[[seu]],features = c(va
   seu.vitro.nor.list[[seu]] <- RunPCA(seu.vitro.nor.list[[seu]],features = setdiff(var.co.list[[seu]],sm3.A485.cc.gene2))
   seu.vitro.nor.list[[seu]] <- RunPCA(seu.vitro.nor.list[[seu]],features = setdiff(var.co.list[[seu]],sm3.A485.gene))
   
-  # seu.vitro.nor.list[[seu]] <- ScaleData(seu.vitro.nor.list[[seu]],features = VariableFeatures(seu.vitro.nor.list[[seu]]))
-  # seu.vitro.nor.list[[seu]] <- RunPCA(seu.vitro.nor.list[[seu]],features =setdiff(VariableFeatures(seu.vitro.nor.list[[seu]]),
-  #   labels(as.dendrogram(row.tree.list$sm2.A485cor0.2)[[2]][[2]][[2]][[2]])
-  # ))
-  # 
-  # # 
-  # seu.vitro.nor.list[[seu]] <- ScaleData(seu.vitro.nor.list[[seu]],features = DEG.mrge.list[[seu]])
-  # seu.vitro.nor.list[[seu]] <- RunPCA(seu.vitro.nor.list[[seu]],features = DEG.mrge.list[[seu]])
-  # # 
+
   pc.use <- 1:6
   seu.vitro.nor.list[[seu]] <- FindNeighbors(seu.vitro.nor.list[[seu]], dims = pc.use)
   seu.vitro.nor.list[[seu]] <- FindClusters(seu.vitro.nor.list[[seu]], resolution = 0.5)
 
   seu.vitro.nor.list[[seu]] <- RunUMAP(seu.vitro.nor.list[[seu]],dims = pc.use)
-#   #seu.vitro.nor.list[[seu]] <- RunTSNE(seu.vitro.nor.list[[seu]],dims = pc.use)
-#   seu.vitro.nor.list[[seu]] <- SetIdent(seu.vitro.nor.list[[seu]],value = seu.vitro.nor.list[[seu]]$RNA_snn_res.0.5)
-#   # 
-#   # print(DimPlot(seu.vitro.nor.list[[seu]],
-#   #               reduction = "umap",
-#   #               cols = c(time.colors,'gray30','black',brewer.pal(8,"Set2"),brewer.pal(8,"Set1")),
-#   #               label.size = 6,
-#   #               sizes.highlight = 4,
-#   #               pt.size = 2,
-#   #               label = F))
+
 seu.vitro.nor.list[[seu]] <- SetIdent(seu.vitro.nor.list[[seu]],value = seu.vitro.nor.list[[seu]]$Type)
-#   print(DimPlot(seu.vitro.nor.list[[seu]],
-#                 reduction = "umap",
-#                 cols = c(time.colors,brewer.pal(8,"Set1")),
-#                 label.size = 6,
-#                 sizes.highlight = 4,
-#                 pt.size = 2,
-#                 label = F))
+
   print(DimPlot(seu.vitro.nor.list[[seu]],
                 reduction = "umap",
                 cols = c(time.colors,'gray30','black',brewer.pal(8,"Set2"),brewer.pal(8,"Set1")),
@@ -273,16 +244,7 @@ seu.vitro.nor.list[[seu]] <- SetIdent(seu.vitro.nor.list[[seu]],value = seu.vitr
                 sizes.highlight = 4,
                 pt.size = 3,
                 label = F))
-# 
-# # print(DimPlot(seu.vitro.nor.list[[seu]],
-# #                 reduction = "tsne",
-# #                 cols = c(ko.time.col[as.character(unique(seu.vitro.nor.list[[seu]]$Type))],'gray30','black',brewer.pal(8,"Set2"),brewer.pal(8,"Set1")),
-# #                 label.size = 6,
-# #                 sizes.highlight = 4,
-# #                 pt.size = 2,
-# #                 label = F))
-#   
-#   
+ 
   seu.vitro.nor.list[[seu]] <- SetIdent(seu.vitro.nor.list[[seu]],value = seu.vitro.nor.list[[seu]]$SeqDate)
   print(DimPlot(seu.vitro.nor.list[[seu]],
                 reduction = "pca",
@@ -367,29 +329,7 @@ for(seu in names(seu.vitro.nor.list)[c(1,3)]){
   dev.off()
 }
 
-# library(ggord)
-# library(ggplot2)
-# for(seu in names(seu.vitro.nor.list)){
-#   pca.res <- FactoMineR::PCA(t(as.matrix(seu.vitro.nor.list[[seu]]@assays$RNA@data[setdiff(var.co.list[[seu]],sm3.A485.gene),])))
-#   pca.res$ind$coord[,1] <- seu.vitro.nor.list[[seu]]@reductions$pca@cell.embeddings[,'PC_1']
-#   pca.res$ind$coord[,2] <- -seu.vitro.nor.list[[seu]]@reductions$pca@cell.embeddings[,'PC_2']
-#   pdf(paste(seu,'circle.0.5.pdf'),15,12)
-#   print(ggord(pca.res,seu.vitro.nor.list[[seu]]$Type,col = c(time.colors[1:4]),arrow=NULL,vec_ext =0,txt=NULL,ellipse=T,ellipse_pro=0.5,
-#               poly = F,alpha=0.5,size=I(8))+ylim(c(-10,13))+xlim(c(-18,13))+scale_shape_manual(values = c(19,17,17,17))+
-#           theme_bw() + 
-#           theme(panel.grid.major = element_blank(), 
-#                 panel.grid.minor = element_blank())+theme(aspect.ratio = 1)+aes(size=I(2.5))+
-#           theme(panel.border = element_rect(size = 4,
-#                                             colour = "black"))+
-#           theme(axis.text = element_text(size = 20, colour = "black")) +
-#           theme(axis.title.x = element_text(size = 40, colour = "black")) +
-#           theme(axis.title.y = element_text(size = 40, colour = "black")) +
-#           theme(legend.text = element_text(size = 45, colour = "black")) +
-#           theme(legend.title = element_text(size = 45, colour = "black")) +
-#           theme(panel.border = element_rect(size = 4,
-#                                             colour = "black")))
-#   dev.off()
-# }
+
 ##########KOscore#######
 for(seu in names(seu.ref.KO.list2)[1:3]){
   x <- ko.coord.list[[seu]][3,]-ko.coord.list[[seu]][1,]
@@ -447,23 +387,7 @@ for(seu in names(direct.select.si.list)){
   MyWriteTable(table(direct.select.si.list[[seu]]$Type),row.names = T,paste(seu,'.type.count.tab',sep = ''))
 }
 
-##########
-# set.seed(5)
-# graph.list <- list()
-# seu <- names(seu.vitro.nor.list)[2]
-# graph.list[[seu]] = graph.adjacency(as.matrix(seu.vitro.nor.list[[seu]]@graphs$RNA_snn),mode = "undirected",weighted = T)
-# layout.3d = layout_with_fr(graph.list[[seu]],dim = 3)
-# 
-# pan.data.par3d <- par3d()
-# open3d(zoom = pan.data.par3d$zoom, userMatrix = pan.data.par3d$userMatrix, windowRect = pan.data.par3d$windowRect)
-# 
-# size.point <- 5
-# plot3d(layout.3d,
-#        # aspect = 'iso',
-#        xlab='FDL1',ylab='FDL2',zlab='FDL3',
-#        size = size.point,
-#        col = time.colors[seu.vitro.nor.list[[seu]]@meta.data$Type])
-# 
+
 # ##########3d#########
 library(igraph)
 library(plotly)
