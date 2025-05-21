@@ -1,6 +1,4 @@
-setwd('G:/project/pregnant_mouse/beta/sm3/ref/new_sm3/ref_final/beta/20221203/cluster/')
-dir.create('Glut2L/LMgene')
-load('seu.ref.raw.beta.Glut2LH.RData')
+
 library(future)
 plan("multisession", workers = 10)
 plan()
