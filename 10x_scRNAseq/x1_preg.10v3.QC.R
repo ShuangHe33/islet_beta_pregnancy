@@ -169,19 +169,7 @@ for (seurat in c("src.G0",
          ScaleData(get(seurat),features = VariableFeatures(get(seurat))))
   assign(seurat,
          MyDoubletFinder(get(seurat),round(ncol(get(seurat)) * 0.1,0)))
-  # assign(paste(seurat,".row.tree",sep = ""),
-  #        MyHeatmap(as.matrix(exp(get(seurat)@assays$RNA@data)[VariableFeatures(get(seurat)),]),
-  #                  type = "log.row.relat",
-  #                  hc.c.data.type = "log.row.relat",
-  #                  hc.r.data.type = "log.row.relat",
-  #                  c.cov.method = "s",
-  #                  r.cov.method = "s",
-  #                  c.hc.method = "ward.D2",
-  #                  r.hc.method = "ward.D2",
-  #                  return.tree = "row",
-  #                  graph = F))
-  # assign(paste(seurat,".row.tree",sep = ""),
-  #        as.dendrogram(get(paste(seurat,".row.tree",sep = ""))))
+
   print(seurat)
 }
 
@@ -510,15 +498,4 @@ p.plot <- p.age +
 
 print(p.plot)
 dev.off()
-##write out########
-MyWriteTable(src.G0@meta.data,
-             'QC/G0.celltype.new.meta.data')
-saveRDS(src.G0,
-        'QC/src.G0.rds')
 
-MyWriteTable(src.G14.5@meta.data,
-             'QC/G14.5.celltype.new.meta.data')
-saveRDS(src.G14.5,
-        'QC/src.G14.5.rds')
-
-save.image('QC/pre.QC.RData')
