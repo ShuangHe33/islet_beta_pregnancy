@@ -129,22 +129,4 @@ for (plot.ens in cellcycle.marker.set){
   
 }
 dev.off()
-#############
 
-
-#seu.ref.L@meta.data[names(pregScore),'pregScore'] <- pregScore
-seu.ref.L <- readRDS('Glut2L/seu.ref.L.endo.celltype.rds')
-seu.ref.L@meta.data[,'pregScore'] <- -Embeddings(seu.ref.L,'pca')[,1]
-seu.ref.L$pseudotime <- seu.ref.L$pregScore
-seu.ref.L <- readRDS('G:/project/pregnant_mouse/beta/sm3/ref/new_sm3/ref_final/beta/20220913/cluster/Glut2L/seu.ref.L.endo.celltype.rds')
-source('G:/r script/file_function.R')
-source('G:/pcatest/MyFunction.R')
-setwd('G:/project/pregnant_mouse/beta/sm3/ref/new_sm3/ref_final/beta/20220913/cluster/')
-pdf('Glut2L/FigS2m.Glut2L.preggene.merge.loess.final.pdf',15,8)
-#MyPseudotimebox2(seu.ref.L@meta.data,time.colors = group.col)
-MyPseudotimebox(seu.ref.L@meta.data,time.colors = ref.time.colors)
-#MyPseudotimebox(seu.ref.L@meta.data,time.colors = ref.time.colors[c(1,1,1,1,rep(2:6,each=2),7,7,7,8,8,9,9,9,rep(10:11,each=2),12,12,12,rep(13:16,each=2))],rep = T)
-dev.off()
-
-##########
-saveRDS(seu.ref.L,'Glut2L/seu.ref.L.endo.celltype.rds')
