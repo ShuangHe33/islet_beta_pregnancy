@@ -1,4 +1,3 @@
-setwd('G:/project/pregnant_mouse/beta/sm3/ref/new_sm3/ref_final/KO/KOdirect/20220913/20221106/20221121/')
 source("G:/pcatest/MyFunction.R")
 source('G:/r script/file_function.R')
 source("G:/r script/MyFunction.Seurat3.R")
