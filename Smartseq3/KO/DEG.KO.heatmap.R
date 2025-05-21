@@ -234,35 +234,7 @@ for(seu in c("G0G18.5Acss2WTHMKO"
 #######relative#####
 merge.relative.tp0.1m.list <- list()
 merge.relative.tp0.1m.list[[seu]] <- (exp(merge.log.tp0.1m.list[[seu]][,c('G0_Acss2KOWT','G18.5_Acss2WT','G18.5_Acss2HMKO')])-1)/rowMax(exp(merge.log.tp0.1m.list[[seu]][,c('G0_Acss2KOWT','G18.5_Acss2WT','G18.5_Acss2HMKO')])-1)
-# pdf(paste('DEG/',seu,'relative.0.4.1.pdf'),5,5)
-# count <- 0
-# for(tmp.cluster in names(genes.list[[seu]])[5:9]){
-#   count <- count+1
-#   plot(colMeans(merge.relative.tp0.1m.list[[seu]][genes.list[[seu]][[tmp.cluster]],]),col = gene.tree.colors[count],main = tmp.cluster,
-#        type='o',pch=20,cex=3,lwd=5,ylab = 'relative expression',ylim = c(0.4,1))
-#   box(lwd=5)
-# }
-# dev.off()
-# 
-# rownames(genes.inf.input) <- sub('_','-',genes.inf.input$SymbolDedu)
-# 
-# selected.gene.inf <- list()
-# selected.gene.inf[[seu]] <- genes.inf.input[c(genes.list[[seu]][['preg.up']],genes.list[[seu]][['preg.down']],
-#                                               genes.list[[seu]][['KO.up']]
-#                                               
-# ),]
-# selected.gene.inf[[seu]]$cluster <- '/'
-# count <- 0
-# 
-# for(tmp.cluster in c('preg.up','preg.down','KO.up')){
-#   count <- count+1
-#   selected.gene.inf[[seu]][genes.list[[seu]][[tmp.cluster]],'cluster'] <- paste('cluster',count,sep = '')
-#   MyGOwritetable(genes.inf.input[genes.list[[seu]][[tmp.cluster]],1],pvalue = 1,paste('go_kegg/go.final.',seu,'.',paste('cluster',count,sep = ''),'.tab',sep = ''))
-# }
-# 
-# MyWriteTable(selected.gene.inf[[seu]],'gene_inf/G18.5Acss2WTHMKO.DEG.heatmap.si.tab')
-# 
-# dir.create('gene_inf')
+
 ######selected genes######
 go.cluster3.down <- MyReadDelim('../../overlap/final/go_kegg/go.Acss2HMKO.G18.5_Acss2HMKO.high.tab')
 insulin.tem <- unlist(strsplit(go.cluster3.down[go.cluster3.down$ID=='GO:0030073','geneID'],'/'))
