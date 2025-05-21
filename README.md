@@ -1,5 +1,5 @@
 # islet_beta_pregnancy
-The repository contains scripts for our study "ACSS2 mediates an epigenetic pathway to regulate β-cell adaptation during gestation in mice", published in _Nature Communications_, 2025.
+Zhang, Y., He, S., Wang, X. et al. ACSS2 mediates an epigenetic pathway to regulate β-cell adaptation during gestation in mice. Nat Commun 16, 4697 (2025).https://doi.org/10.1038/s41467-025-58322-3.
 
 ![image](https://github.com/ShuangHe33/islet_beta_pregnnacy/blob/main/graph_abstract.png)
 
