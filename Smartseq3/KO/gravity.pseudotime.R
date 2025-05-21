@@ -1,4 +1,4 @@
-load('20221106/20221121/KOdirect.RData')
+
 
 ko.time.col <- c(time.colors[c(5:8)],time.colors[c(5:8)],time.colors[c(1,2,15,12)])
 names(ko.time.col) <- c(names(table(seu.ref.KO.list2$G0G14.5P300WTHMKO$Type)),names(table(seu.ref.KO.list2$G0G18.5Stat3WTHMKO$Type)),
