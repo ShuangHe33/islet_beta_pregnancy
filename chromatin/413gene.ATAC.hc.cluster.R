@@ -2,76 +2,7 @@ ATAC.merge500.bed <- ATAC.merge.bed[ATAC.merge.bed@ranges@width>=500]
 G14.5HFD.up.bed <- ATAC.merge500.bed[ATAC.merge500.bed$G14.5HFD=='up']#506
 G14.5HFD.500.df <-  as.data.frame(G14.5HFD.up.bed)[,paste(c('Ctrl','G0HFD','G14.5','G14.5HFD'),'mean',sep = '.')]  
 
-# neighbor.graphs.list <- list()
-# cluster.raw.list <- list()
-# 
-# neighbor.graphs.list[['G14.5HFD.500']] <- Seurat::FindNeighbors(object = log2(G14.5HFD.500.df+1),
-#                                                              k.param = 15)
-# cluster.raw.list[['G14.5HFD.500.res1']] <- Seurat::FindClusters(neighbor.graphs.list[['G14.5HFD.500']]$snn, resolution = 1)[,1]
-# names(cluster.raw.list[['G14.5HFD.500.res1']]) <- rownames(G14.5HFD.500.df)
-# tmp.heatmap <-  as.matrix(G14.5HFD.500.df[order(cluster.raw.list[['G14.5HFD.500.res1']]),])
-# 
-# 
-# G14.5HFD.bed.list <- list()
-# seu <- 'G14.5HFD.500.res1'
-# cluster.bed.list[[seu]] <- list()
-# for(tmp.cluster in names(table(cluster.raw.list[[seu]]))){
-#   print(tmp.cluster)
-#   
-#   cluster.bed.list[[seu]][[tmp.cluster]] <- ATAC.merge.bed[names(cluster.raw.list[[seu]])[cluster.raw.list[[seu]]==tmp.cluster]]
-#   # gene.venn.list[[seu]][[tmp.cluster]] <- Venn(list('HFD.up'=G14.5CDG14.5HFD.up.gene,
-#   #                                                   'atac.cluster' = unique(cluster.bed.list[[seu]][[tmp.cluster]]$gene.id)
-#   # ))
-#   # plot(gene.venn.list[[seu]][[tmp.cluster]])
-#   boxplot(as.data.frame(cluster.bed.list[[seu]][[tmp.cluster]])[,paste(c('Ctrl','G0HFD','G14.5','G14.5HFD'),'mean',sep = '.')],main= paste(seu,tmp.cluster,sep = '.'),outline=F,col='gray60',ylab='signal intensity',lwd=3,notch=T#,
-#          # ylim = c(0,20)
-#   )
-# }
-# 
-# 
-# G14.5HFD.bed.list[['knn.cluster1']] <- c(cluster.bed.list[[seu]]$`0`$rowname,cluster.bed.list[[seu]]$`2`$rowname,
-#                                          cluster.bed.list[[seu]]$`3`$rowname,cluster.bed.list[[seu]]$`4`$rowname,
-#                                          cluster.bed.list[[seu]]$`5`$rowname,cluster.bed.list[[seu]]$`6`$rowname
-#                                          )
-# 
-# 
-# G14.5HFD.bed.list[['knn.cluster2']] <- c(cluster.bed.list[[seu]]$`1`$rowname
-# )
-# 
-# G14.5HFD.bed.list[['knn.cluster3']] <- c(cluster.bed.list[[seu]]$`0`$rowname,cluster.bed.list[[seu]]$`3`$rowname)
-# 
-# G14.5HFD.bed.list[['knn.cluster4']] <- c(cluster.bed.list[[seu]]$`2`$rowname,
-#                                          cluster.bed.list[[seu]]$`4`$rowname,
-#                                          cluster.bed.list[[seu]]$`5`$rowname,cluster.bed.list[[seu]]$`6`$rowname
-# )
-# 
-# for(tmp.cluster in names(G14.5HFD.bed.list)[1:3]){
-#   boxplot(as.data.frame(ATAC.merge.bed[G14.5HFD.bed.list[[tmp.cluster]]])[,paste(c('CD','HFD'),'H3K27ac.nor.mean',sep = '.')],main= paste(tmp.cluster,sep = '.'),outline=F,col='gray60',ylab='signal intensity',lwd=3,notch=T,
-#           ylim = c(0,18)
-#   )
-#   P300.p <- wilcox.test(as.data.frame(ATAC.merge.bed[G14.5HFD.bed.list[[tmp.cluster]]])[,paste(c('CD'),'H3K27ac.nor.mean',sep = '.')],
-#                         as.data.frame(ATAC.merge.bed[G14.5HFD.bed.list[[tmp.cluster]]])[,paste(c('HFD'),'H3K27ac.nor.mean',sep = '.')],
-#                         paired = T)
-#   
-#   MyText(paste("p-value: \n",
-#                P300.p$p.value,"\n"),
-#          text.cex = 1.5)
-# }
-# 
-# png(paste('G14.5',".clusters.raw.png",sep = ''),2000,2500)
-# par(oma = c(10,0,0,0))
-# MyHeatmap(tmp.heatmap,
-#           type = "log.raw",
-#           Colv = "none",
-#           Rowv = "none",
-#           dendrogram = 'none',
-#           ColSideColors =
-#             MyName2Col(histone.si.tab[colnames(tmp.heatmap),]$Time,time.colors,is.row = F),
-#           ColSideColorsSize = 1,
-#           RowSideColors = MyName2Col(sort(cluster.raw.list[['G14.5HFD.500.res1']]),time.colors,is.row = T)#,
-#           # margins = c(15,15)
-# )
-# dev.off()
+
 
 png(paste('20221203.412',".hc.clusters.raw.png",sep = ''),2000,3000)
 par(oma = c(10,0,0,0))
@@ -260,27 +191,6 @@ for(tmp.cluster in names(G14.5HFD.bed.list)[1:3]){
 }
 dev.off()
 
-
-
-# pdf('Figure/refc.412.gene.hccluster500bp.H3K27ac.pdf',3,5)
-# for(tmp.cluster in names(G14.5HFD.bed.list)[23:25]){
-#   boxplot(as.data.frame(ATAC.merge.bed[G14.5HFD.bed.list[[tmp.cluster]]])[,paste(c('CD','HFD'),'H3K27ac.nor.mean',sep = '.')],
-#           main= paste(tmp.cluster,sep = '.'),outline=F,col='gray60',ylab='signal intensity',lwd=3,notch=T,
-#           ylim = c(0,18),xaxt="n"
-#   )
-#   axis(1,at = 1:2,labels = c('CD','HFD'),cex.axis = 0.5)
-#   box(lwd=3)
-#   P300.p <- wilcox.test(as.data.frame(ATAC.merge.bed[G14.5HFD.bed.list[[tmp.cluster]]])[,paste(c('CD'),'H3K27ac.nor.mean',sep = '.')],
-#                         as.data.frame(ATAC.merge.bed[G14.5HFD.bed.list[[tmp.cluster]]])[,paste(c('HFD'),'H3K27ac.nor.mean',sep = '.')],
-#                         paired = T)
-#   
-#   MyText(paste("G14.5CD HFDp-value: \n",
-#                P300.p$p.value,"\n"),
-#          text.cex = 0.5)
-# }
-# dev.off()
-
-ATAC.merge.bed$G0HFD.mean
 
 G14.5HFD.bed.list[['413']] <- G14.5HFD.up.bed$rowname
 pdf('G:/lab/Article/heshuang/BYLW/chromatin/20230207.raw.Figs10k.refc.412all.gene.hccluster500bp.WTG0HFDG14.5CDG14.5HFDH3K27ac.pdf',3,5)
