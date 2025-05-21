@@ -1,8 +1,3 @@
-dir.create('G:/project/pregnant_mouse/chromatin/ATAC/20221106_addG0HFD_rep23')
-setwd('G:/project/pregnant_mouse/chromatin/ATAC/20221106_addG0HFD_rep23/')
-load('ATAC.RData')
-
-#load('ATAC.G0G14.5G14.5HFD.RData')
 
 source('G:/pcatest/MyFunction.R')
 source('G:/r script/file_function.R')
