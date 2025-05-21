@@ -18,8 +18,6 @@ table(seu.beta.si.tab$betagroup.time)
 table(seu.beta.si.tab$betagroup.time,seu.beta.si.tab$hc.knn.proliferative)
 
 
-setwd('G:/project/pregnant_mouse/beta/sm3/ref/new_sm3/ref_final/beta/Glut2H/cluster/excludebatch/proliferation/')
-
 library(future)
 plan("multisession", workers = 10)
 plan()
@@ -41,8 +39,6 @@ names(preg.colors) <- c("Ctrl",
 #########
 seu.beta <- readRDS('../src.beta.rds')
 
-beta.cc.sym2 <- readRDS('G:/project/pregnant_mouse/beta/sm3/ref/new_sm3/ref_final/beta/Glut2H/cluster/excludebatch/pre.cc.sym.rds')
-beta.cc.sym <- readRDS('../beta.pre.cc.sym.rds')
 beta.pre.cc.sym <- rownames(MyGeneExp(as.matrix(exp(seu.beta@assays$RNA@data)[beta.cc.sym,]),
                                       2,exp = 'yes',5))
 length(beta.pre.cc.sym)
@@ -161,52 +157,7 @@ plot(p.pca+
        )+
        theme(aspect.ratio=1))
 
-# p.pca$data_ <- p.pca$data
-# p.pca$data_$hc.proliferative_ <- p.pca$data_$knn.hc.proliferative
-# p.pca$data_$hc.proliferative_ <- factor(p.pca$data_$hc.proliferative_,levels = rev(names(table(seu.beta$knn.hc.proliferative))))
-# p.pca$data <- p.pca$data_[order(p.pca$data_$hc.proliferative_),]
 
-# plot(p.pca+
-#        scale_color_manual(values = c("#ba984d",'gray90')) +
-#        geom_point(aes(x =-x.pos,
-#                       y = y.pos,
-#                       col = hc.proliferative#,
-#                       # shape = State
-#        ),
-#        size =6
-#        )+
-#        theme(aspect.ratio=1))
-
-# plot(p.pca+
-#        
-#        scale_color_manual(values = c("#ba984d",'gray90')) +
-#        geom_point(aes(x =-x.pos,
-#                       y = y.pos,
-#                       col = hc.knn.proliferative#,
-#                       # shape = State
-#        ),
-#        size =6
-#        )+
-#        theme(aspect.ratio=1))
-# plot(p.pca+
-#        scale_color_manual(values = c('orange','gray90')) +
-#        geom_text(aes(x =-x.pos,
-#                       y = y.pos,
-#                       col = hc.proliferative#,
-#                       # shape = State
-#        ),
-#        size = 0.5
-#        ))
-# plot(p.pca+
-#        scale_color_manual(values = c('orange','gray90','black')) +
-#        geom_point(aes(x =x.pos,
-#                       y = y.pos,
-#                       col = cc.old#,
-#                       # shape = State
-#        ),
-#        size = 4
-#        ))
-dev.off()
 ##########
 p.pca <- MySeuratDR2Gg2(seu.beta,seu.beta@meta.data,
                         reduction.use = 'pca',reduction.key = 'PC',estimate.variation.explain.percentage = T)
@@ -318,24 +269,9 @@ print(p.umap +
         )+ theme(aspect.ratio=1))
 
 dev.off()
-# 
+
 seu.beta$knn.proliferative <- 'quiescent'
 seu.beta@meta.data[seu.beta$RNA_snn_res.1.5 %in% c(17,18),'knn.proliferative'] <- 'proliferative'
-# 
-# 
-cc.type.ratio <- Mybarplot(seu.beta@meta.data,c1 = 'Time',c2 = 'knn.proliferative',cols = time.colors)
-
-pdf('proliferative/cc.bar.pdf',8,6)
-barplot(cc.type.ratio[1,])
-dev.off()
-# 
-# 
-# MyWriteTable(table(seu.beta@meta.data$Type,seu.beta@meta.data$hc.proliferative3),row.names = T,'proliferative/type.cc.count.tab')
-# MyWriteTable(table(seu.beta@meta.data$Type_rep,seu.beta@meta.data$hc.proliferative3),row.names = T,'proliferative/type_rep.cc.count.tab')
-# 
-# 
-# MyWriteTable(seu.beta@meta.data,'proliferative/seu.beta.cc.meta.tab')
-# MyWriteTable(table(seu.beta$Type_rep,seu.beta$hc.proliferative),row.names = T,'proliferative/seu.beta.cc.meta.tab')
 
 ###########pc2 genes#########
 PCA.supp <- FactoMineR::PCA(t(as.matrix(seu.beta@assays$RNA@data[beta.cc.sym,])),
@@ -355,50 +291,5 @@ beta.pc12.dim1 <- as.data.frame(beta.PC12.dim.res$Dim.1$quanti)
 cc.pc1.genes <- rownames(beta.pc12.dim1)[-log10(beta.pc12.dim1$p.value)>=5]
 length(cc.pc1.genes)#313
 
-beta.pc12.cc.gene <- unique(c(cc.pc2.genes,cc.pc1.genes))
-length(beta.pc12.cc.gene)#255
 
-# c1Color <- MyName2Col(seu.beta@meta.data[,"Type"],
-#                       time.colors)
-# c1Color <- as.matrix(c1Color)
-# c2Color <- MyName2Col(seu.beta@meta.data[,"hc.proliferative"],
-#                       c('orange','gray90'))
-# c2Color <- as.matrix(c2Color)
-# 
-# cColor <- cbind(c1Color,c2Color)
-# 
-# png('proliferative/pc12.filter.cc.heatmap.png',2000,3000)
-# cc.col.pc12.tree <-
-#   MyHeatmap(as.matrix(exp(seu.beta@assays$RNA@data))[beta.pc12.cc.gene,],
-#             type = "log.row.relat",
-#             hc.c.data.type = "log.row.relat",
-#             hc.r.data.type = "log.row.relat",
-#             c.cov.method = "s",
-#             r.cov.method = "s",
-#             c.hc.method = "ward.D2",
-#             r.hc.method = "ward.D2",
-#             ColSideColors = cColor,
-#             ColSideColorsSize = 2,
-#             return.tree = "col",
-#             graph = T)
-# dev.off()
-# 
-# cc.col.pc12.tree.den <- as.dendrogram(cc.col.pc12.tree)
-# beta.pc12.cc.sn <- c(labels(cc.col.pc12.tree.den[[2]]),labels(cc.col.pc12.tree.den[[1]][[1]]),
-#                      labels(cc.col.pc12.tree.den[[1]][[2]][[1]][[1]]))
-# 
-# seu.beta$pc12.hc.proliferative <- 'quiescent'
-# seu.beta@meta.data[beta.pc12.cc.sn,'pc12.hc.proliferative'] <- 'proliferative'
-# table(seu.beta$Type,seu.beta$pc12.hc.proliferative)
-# table(seu.beta$Type_rep,seu.beta$pc12.hc.proliferative)
-# 
-# 
-# cc.type.ratio <- Mybarplot(seu.beta@meta.data,c1 = 'Type',c2 = 'pc12.hc.proliferative',cols = time.colors)
-# cc.typerep.ratio <- Mybarplot(seu.beta@meta.data,c1 = 'Type_rep',c2 = 'pc12.hc.proliferative',cols = time.colors)
-# pdf('proliferative/cc.bar.pdf',8,6)
-# barplot(cc.type.ratio[1,])
-# barplot(cc.typerep.ratio[1,])
-# dev.off()
-########
-rm(seu.beta)
-save.image('10x.beta.10x.cc.gene.RData')
+
