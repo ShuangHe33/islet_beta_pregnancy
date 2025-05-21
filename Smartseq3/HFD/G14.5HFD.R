@@ -1,7 +1,4 @@
-dir.create('G:/project/pregnant_mouse/beta/sm3/ref/new_sm3/ref_final/HFD/KO/20221203')
-setwd('G:/project/pregnant_mouse/beta/sm3/ref/new_sm3/ref_final/HFD/KO/20221203/')
-load('P7NLHFD.RData')
-load('HFD.RData')
+
 library(future)
 plan("multisession", workers = 10)
 plan()
