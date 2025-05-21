@@ -151,42 +151,7 @@ assign(paste(i,'var2000.row.tree',sep = '.'),
                  return.tree = "row",
                  graph = T))
 dev.off()
-# assign(paste(i,'beta.var.co15',sep = ''), MyCo(as.matrix(seu.ko.list[[i]]@assays$RNA@data),
-#                                                var.gene = setdiff(VariableFeatures(seu.ko.list[[i]]),
-#                                                                   c(#WT.batch.sym,
-#                                                                     #batch.sym,
-#                                                                     labels(as.dendrogram(get(paste(i,'var2000.row.tree',sep = '.')))[[1]])
-#                                                                     #HFDref.cc.sym
-#                                                                   )),
-#                                                exp.prop.whole.max = 1,
-#                                                exp.prop.whole.min = 0.01,
-#                                                # vector.group = samples.inf.qc$GroupNameFig1,
-#                                                # exp.prop.group.min = 0.1,
-#                                                # exp.prop.group.max = 0.5,
-#                                                cor.method = "rho",
-#                                                exp.cutoff = 1,
-#                                                cor.cutoff = 0.2,
-#                                                partner.cutoff = 10,
-#                                                refine.cor = T))
-# 
-# dim(get(paste(i,'beta.var.co15',sep = '')))#244
-# 
-# 
-# png(paste(i,'.rmcc.Vstvar.2000.cor0.15.10.0.02.raw.png',sep = ''),2000,3000)
-# assign(paste(i,'cor.row.tree',sep = '.') ,
-#        MyHeatmap(as.matrix(exp(seu.ko.list[[i]]@assays$RNA@data))[rownames(get(paste(i,'beta.var.co15',sep = ''))),colnames(seu.ko.list[[i]])],
-#                  type = "log.row.relat",
-#                  hc.c.data.type = "log.row.relat",
-#                  hc.r.data.type = "log.row.relat",
-#                  c.cov.method = "s",
-#                  r.cov.method = "s",
-#                  c.hc.method = "ward.D2",
-#                  r.hc.method = "ward.D2",
-#                  ColSideColors = cColor,
-#                  ColSideColorsSize = 2,
-#                  return.tree = "row",
-#                  graph = T))
-# dev.off()
+
 ##########
 VariableFeatures(seu.ko.list[[i]]) <- setdiff(VariableFeatures(seu.ko.list[[i]]),labels(as.dendrogram(get(paste(i,'var2000.row.tree',sep = '.')))[[1]]))
 seu.ko.list[[i]] <- ScaleData(seu.ko.list[[i]],features = VariableFeatures(seu.ko.list[[i]]))
@@ -222,30 +187,13 @@ DimPlot(seu.ko.list[[i]],
         sizes.highlight = 4,
         pt.size = 2,
         label = F)
-# seu.ko.list[[i]] <- RunTSNE(seu.ko.list[[i]],
-#                             dims = pc.use,
-#                             perplexity= round((30+ncol(seu.ko.list[[i]])/100)),
-#                             check_duplicates = F)
-# 
-# 
-# seu.ko.list[[i]] <- SetIdent(seu.ko.list[[i]],value = seu.ko.list[[i]]$Type)
-# seu.ko.list[[i]] <- SetIdent(seu.ko.list[[i]],value = seu.ko.list[[i]]$Type_rep)
-# DimPlot(seu.ko.list[[i]],
-#         reduction = "tsne",
-#         cols = c(ref.time.colors,'gray30','black',brewer.pal(8,"Set2"),brewer.pal(8,"Set1")),
-#         label.size = 6,
-#         sizes.highlight = 4,
-#         pt.size = 2,
-#         label = F)
+
 pdf('B6.pc13.pdf',15,12)
 p.pca <- MySeuratDR2Gg2(seu.ko.list[[i]],seu.ko.list[[i]]@meta.data,reduction.use = 'pca',
                         reduction.key = 'PC',x.dim = 1,y.dim = 2,
                         estimate.variation.explain.percentage = T)
 
-# p.pca$data_ <- p.pca$data
-# p.pca$data_$Type_ <- p.pca$data_$KOtype
-# p.pca$data_$Type_ <- factor(p.pca$data_$Type_,levels = names(table(p.pca$data_$KOtype)))
-# p.pca$data <- p.pca$data_[order(p.pca$data_$Type_),]
+
 
 plot(p.pca+
        scale_color_manual(values = c(ko.time.col)) +
@@ -337,56 +285,10 @@ plot(p.pca+
 
 
 dev.off()
-# 
-# si.select <- seu.ko.list[[i]]@meta.data
-# pregScore=c()
-# for (time in names(table(seu.ko.list[[i]]$Type))) {
-#   regress=lm(-Embeddings(seu.ko.list[[i]],'pca')[si.select$Type==time,3]~
-#                Embeddings(seu.ko.list[[i]],'pca')[si.select$Type==time,1])$coefficients[2]
-#   temp=-c(1,regress)%*%rbind(Embeddings(seu.ko.list[[i]],'pca')[si.select$Type==time,1],
-#                              Embeddings(seu.ko.list[[i]],'pca')[si.select$Type==time,3])
-#   # temp=temp-mean(temp)
-#   names(temp)=si.select[si.select$Type==time,]$SampleName
-#   pregScore=c(pregScore,temp)
-# }
-# 
-# 
-# si.select <- seu.ko.list[[i]]@meta.data
-# pregScore=c()
-# for (time in names(table(seu.ko.list[[i]]$Type))) {
-#   regress=lm(Embeddings(seu.ko.list[[i]],'pca')[si.select$Type==time,]~
-#                Embeddings(seu.ko.list[[i]],'pca')[si.select$Type==time,1])$coefficients[2]
-#   temp=-c(1,regress)%*%rbind(Embeddings(seu.ko.list[[i]],'pca')[si.select$Type==time,1],
-#                              Embeddings(seu.ko.list[[i]],'pca')[si.select$Type==time,2])
-#   # temp=temp-mean(temp)
-#   names(temp)=si.select[si.select$Type==time,]$SampleName
-#   pregScore=c(pregScore,temp)
-# }
 
 
 
 
-# ko.coord.list <- list()
-# pca.df.list <- list()
-# seu <- 'B6'
-# for(seu in names(seu.ko.list)[2]){
-#   pca.df.list[[seu]] <- cbind(Embeddings(seu.ko.list[[seu]],'pca'),seu.ko.list[[seu]]@meta.data[,c('SampleName','Type')])
-#   #pca.df.list[[seu]] <- cbind(dif.beta.ref[[seu]][seu.ko.list[[seu]]$SampleName,],seu.ko.list[[seu]]@meta.data[,c('SampleName','Type')])
-#   
-#   pca.df.list[[seu]] <- pca.df.list[[seu]][pca.df.list[[seu]]$Type %in% names(table(seu.ko.list[[seu]]$Type))[c(1,3)],]
-#   
-#   ko.coord.list[[seu]] <- Mycoord(pca.df.list[[seu]],dims=c(1,3),
-#                                   class = 'Type',
-#                                   names(table(seu.ko.list[[seu]]$Type))[c(1,3)])
-# }
-# 
-# for(seu in names(seu.ko.list)[2]){
-#   x <- ko.coord.list[[seu]][2,]-ko.coord.list[[seu]][1,]
-#   x_norm <- x/sqrt(sum(x^2))
-#   
-#   seu.ko.list[[seu]]$pseudotime <- as.matrix(Embeddings(seu.ko.list[[seu]],'pca')[,c(1,3)]) %*% as.matrix(x_norm)
-#   #seu.ko.list[[seu]]$pseudotime <- as.matrix(dif.beta.ref[[seu]][seu.ko.list[[seu]]$SampleName,1:2]) %*% as.matrix(x_norm)
-# }
 
 seu <- 'P7NLHFD'
 seu.ko.list[[seu]]$pseudotime <- -Embeddings(seu.ko.list[[seu]],'pca')[,1]
@@ -497,16 +399,7 @@ for(i in seq_along(Type3dList)) {
   with(Type3dList[[i]], points3d(PC_1, PC_2, PC_3,size=size.list[[i]],col=ko.time.col[as.factor(KOtype)]))
 }
 
-#box3d(lwd=1)
-# rgl.postscript("Figure/20221128/B6.G14.5WTKO.pca.3d.3.pdf",
-#                fmt = "pdf",
-#                drawText = F)
-#options(rgl.useNULL = FALSE)
-#rgl.snapshot("Figure/20221128/B6.G14.5WTKO.pca.3d.png")
-box3d(lwd=1)
-# title3d(xlab = paste("PC1 (",'3.8',"%)",sep = ""),
-#         ylab = paste("PC2 (",'1.4',"%)",sep = ""),
-#         zlab = paste("PC3 (",'0.9',"%)",sep = ""))
+
 rgl.snapshot("G:/lab/Article/heshuang/BYLW/sm3/HFD/B6.G14.5WTKO.pca.3d.png")
 
 ##########vioplot######
