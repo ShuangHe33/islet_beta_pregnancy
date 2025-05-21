@@ -1,4 +1,3 @@
-dir.create('20221121')
 
 load('KOdirect.RData')
 save.image('KOdirect.RData')
