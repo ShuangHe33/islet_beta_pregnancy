@@ -92,9 +92,6 @@ Glut2L.1.2.DEG.tab$cluster <- factor(Glut2L.1.2.DEG.tab$cluster,levels = c('Glut
 MyDEGfilterplot(seu,Glut2L.1.2.DEG.tab.filter,Glut2L.1.2.DEG.tab,prefix = paste('G:/lab/Article/heshuang/BYLW/10x/Figs1g.GLUT2L_12.2.','padj0.01','fc1.2',sep = ''),plotheatmap = F,plotfireplot = T,padj = F,fire.cols = celltype.col2[c(1,2)],text.cex=1,pval.gap = 5,x.gap = 0.2,x.ext = -1.2,ext = 0,point.size = 2)
 MyDEGfilterplot(seu,Glut2L.1.2.DEG.tab.filter,Glut2L.1.2.DEG.tab,prefix = paste('G:/lab/Article/heshuang/BYLW/10x/Figs1g.text.GLUT2_12.2.','padj0.01','fc1.2',sep = ''),plotheatmap = F,plotfireplot = T,padj = F,fire.cols = celltype.col2[c(1,2)],text.cex=1,y.cex = 0.01,pval.gap = 5,x.gap = 0.2,x.ext = -1.2,ext = 0,point.size = 2, width.input=7,height.input=6)
 
-# MyDEGfilterplot(beta.seu,DEG.raw.filter = seu,Glut2L.1.2.DEG.tab.filter,DEG.raw = Glut2L.1.2.DEG.tab,'beta/DEG/Glut2L1_2.',plotheatmap = T,display.cells = colnames(beta.seu)[beta.seu$beta %in% c('Glut2L_1','Glut2L_2')],plotfireplot = F,
-#                 group = c('Time','beta')
-# )
 
 MyWriteTable(cbind(genes.inf.input[Glut2L.1.2.DEG.tab.filter$gene,c('EnsemblGeneID','Symbol')],Glut2L.1.2.DEG.tab.filter),'beta/DEG/Figs1g.Gltu2L1_2.DEG.10x.filter.fc.tab')
 rm(beta.seu)
@@ -206,28 +203,7 @@ beta.g1.g2g3.DEGs.filter.row.tree <- MyHeatmap(as.matrix(exp(beta.seu@assays$RNA
                                                return.tree = "row"
 )
 
-# r1Color <- MyName2Col(cutree(beta.g1.g2g3.DEGs.filter.row.tree,
-#                              2),
-#                       gene.tree.colors,
-#                       is.row = T)
-# r1Color <- as.matrix(r1Color)
-# 
-# MyHeatmap(as.matrix(exp(beta.seu@assays$RNA@data))[rownames(beta.seu.g1g23.diffmarker.filter),beta.seu@meta.data$SampleName],
-#           type = "log.row.zscore",
-#           hc.c.data.type = "log.row.relat",
-#           hc.r.data.type = "log.row.relat",
-#           c.cov.method = "p",
-#           r.cov.method = "p",
-#           c.hc.method = "ward.D2",
-#           # color.palette = colors.heat,
-#           r.hc.method = "ward.D2",
-#           ColSideColors = cColor,
-#           ColSideColorsSize = 2,
-#           RowSideColors = r1Color
-#           #labRow = gene.var.co,
-#           #cexRow = 0.3,
-#           # return.tree = "row"
-# )
+
 dev.off()
 ##########g1 g2 g3#####
 g1g2g3.gene <- unique(c(rownames(beta.seu.g1g23.diffmarker),
@@ -322,8 +298,3 @@ MyHeatmap(as.matrix(exp(beta.seu@assays$RNA@scale.data))[beta.reorder.sym,colnam
           # return.tree = "row"
 )
 dev.off()
-#########
-rm(beta.seu)
-saveRDS(beta.seu,'beta/src.beta.rds')
-rm(beta.seu)
-save.image('beta.10x.DEG.RData')
