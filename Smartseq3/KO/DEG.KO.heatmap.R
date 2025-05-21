@@ -1,4 +1,4 @@
-setwd('G:/project/pregnant_mouse/beta/sm3/ref/new_sm3/ref_final/KO/KOdirect/20220913/20221106/20221121/')
+
 load('KOdirect.RData')
 
 seu <- 'G0G14.5P300WTHMKO'
