@@ -1,8 +1,4 @@
-dir.create('G:/project/pregnant_mouse/beta/sm3/ref/new_sm3/ref_final/beta/20221203')
-setwd('G:/project/pregnant_mouse/beta/sm3/ref/new_sm3/ref_final/beta/20221203/')
-dir.create('cluster')
-setwd('cluster')
-load('seu.ref.raw.beta.Glut2LH.RData')
+
 library(future)
 plan("multisession", workers = 10)
 plan()
@@ -18,23 +14,6 @@ library(RColorBrewer)
 
 rownames(genes.inf.input) <- sub('_','-',genes.inf.input$SymbolDedu)
 
-seu.ref.raw <- readRDS('../20220913/cluster/seu.ref.raw.beta.celltype.rds')
-pre.ambigous.sym <- readRDS('../20220913/cluster/pre.ambigous.sym.rds')
-exclude.cell <- c('m220608_hs_M_zy_20220606_1_lib15_03_044','m220608_hs_M_zy_20220606_1_lib15_03_004',#G0
-                  'm220608_hs_M_zy_20220606_1_lib15_03_005',#G0Acss2
-                  'm220523_hs_H_zy_20220520_1_lib13_04_082',
-                  'm220523_hs_H_zy_20220520_1_lib13_04_093',
-                  'm220523_hs_H_zy_20220520_1_lib08_02_132',
-                  'm220523_hs_H_zy_20220520_1_lib08_02_094',#G12.5
-                  'm220913_hs_L03_M_zy_20220909_04_079',
-                  'm220913_hs_L03_M_zy_20220909_04_061',#G6.5
-                  "m220420_hs_M_ZY_20220418_3_117","m220420_hs_M_ZY_20220418_3_120",'m220620_hs_G14.5_C57BL6J_4_islet_67' #G14.5 Acss2
-                  )
-G10.5.cell <- c('m220523_hs_H_zy_20220520_1_lib08_02_031',
-                'm220523_hs_H_zy_20220520_1_lib13_04_066',
-                'm220523_hs_H_zy_20220520_1_lib13_04_170',
-                'm220523_hs_H_zy_20220520_1_lib13_04_090',
-                'm220523_hs_H_zy_20220520_1_lib13_04_170')
 seu.ref.raw <- subset(seu.ref.raw,cells = colnames(seu.ref.raw)[!seu.ref.raw$SampleName %in% exclude.cell])
 seu.ref.raw$Type <- as.character(seu.ref.raw$Type)
 seu.ref.raw@meta.data[G10.5.cell,'Type'] <- 'G10.5'
@@ -45,11 +24,6 @@ seu.ref.raw@meta.data[seu.ref.raw$Type_rep=='Virgin_rep4','Rep'] <- 'rep2'
 
 seu.ref.raw <- readRDS('seu.ref.raw.beta.celltype.rds')
 seu.ref.raw$Type <- as.character(seu.ref.raw$Type)
-seu.ref.raw@meta.data[c('m220523_hs_H_zy_20220520_1_lib13_04_072',
-                        'm220523_hs_H_zy_20220520_1_lib13_04_144',
-                        'm220523_hs_H_zy_20220520_1_lib13_04_119',
-                        'm220523_hs_H_zy_20220520_1_lib08_02_125'
-),'Type'] <- 'G14.5'
 
 seu.ref.raw <- readRDS('seu.ref.raw.beta.celltype.rds')
 ############
@@ -84,18 +58,8 @@ var2000.row.tree.exclude <-
             graph = T)
 dev.off()
 
-# var2000.row.tree.den <- as.dendrogram(var2000.row.tree)
-# pre.ambigous.sym.list <- list()
-# pre.ambigous.sym.list[['Alb']] <- labels(var2000.row.tree.den[[2]][[1]])
-# pre.ambigous.sym.list[['jun']] <- labels(var2000.row.tree.den[[2]][[2]][[2]][[2]][[1]][[1]])
-# pre.ambigous.sym.list[['exo']] <- labels(var2000.row.tree.den[[2]][[2]][[2]][[2]][[2]][[2]][[2]][[2]][[1]])
-# pre.ambigous.sym <- unlist(pre.ambigous.sym.list)
-# 
-# grep('Pnlip',labels(var2000.row.tree.den[[2]][[2]][[2]][[2]][[2]][[2]][[2]][[2]][[1]]))
-# 
-# var2000.row.tree.den <- as.dendrogram(var2000.row.tree.exclude)
+
 pre.cc.sym <- c(labels(as.dendrogram(var2000.row.tree.exclude)[[1]]))
-#length(pre.cc.sym)#241
 
 saveRDS(pre.cc.sym,'pre.cc.sym.rds')
 
@@ -134,9 +98,7 @@ var.co0.15.row.tree <-
             return.tree = "row",
             graph = T)
 dev.off()
-# 
-# var.co0.2.row.tree.den <- as.dendrogram(var.co0.15.row.tree)
-# G14.5.heter.sym <- labels(var.co0.2.row.tree.den[[1]][[2]][[1]])
+
 ##########
 seu.ref.raw <- ScaleData(seu.ref.raw,features = VariableFeatures(seu.ref.raw))
 seu.ref.raw <- RunPCA(seu.ref.raw, features = all.var.co)
@@ -155,84 +117,7 @@ seu.ref.raw <- FindNeighbors(seu.ref.raw, dims = pc.use)
 #seu.ref.raw <- FindClusters(seu.ref.raw, resolution = 1.5)
 seu.ref.raw <- FindClusters(seu.ref.raw, resolution = 0.2)
 seu.ref.raw <- FindClusters(seu.ref.raw, resolution = 0.15)
-#seu.ref.raw <- FindClusters(seu.ref.raw, resolution = 3.5)
-#seu.ref.raw <- RunUMAP(seu.ref.raw,dims = pc.use)
-# 
-# pdf('umap.rmcc.vst.cor0.15.1.0.01.10pc13.res0.2.pdf',
-#     6,5)
-# seu.ref.raw <- SetIdent(seu.ref.raw,value = seu.ref.raw$RNA_snn_res.0.2)
-# DimPlot(seu.ref.raw,
-#         reduction = "umap",
-#         cols = c(time.colors,'gray30','black',brewer.pal(8,"Set2"),brewer.pal(8,"Set1")),
-#         label.size = 6,
-#         sizes.highlight = 4,
-#         pt.size = 1,
-#         label = T)  
-# 
-# seu.ref.raw <- SetIdent(seu.ref.raw,value = seu.ref.raw$Type)
-# DimPlot(seu.ref.raw,
-#         reduction = "umap",
-#         cols = c(ref.time.colors,'gray30','black',brewer.pal(8,"Set2"),brewer.pal(8,"Set1")),
-#         label.size = 6,
-#         sizes.highlight = 4,
-#         pt.size = 1,
-#         label = F)
-# seu.ref.raw <- SetIdent(seu.ref.raw,value = seu.ref.raw$beta)
-# DimPlot(seu.ref.raw,
-#         reduction = "umap",
-#         cols = c(ref.time.colors,'gray30','black',brewer.pal(8,"Set2"),brewer.pal(8,"Set1")),
-#         label.size = 6,
-#         sizes.highlight = 4,
-#         pt.size = 1,
-#         label = F)
-# dev.off()
-# for(tmp.perplexity in seq(50,150,10)){
-#   seu.ref.raw <- RunTSNE(seu.ref.raw,
-#                          dims = pc.use,
-#                          #perplexity= round((30+ncol(seu.ref.raw)/100)),
-#                          perplexity= tmp.perplexity,
-#                          check_duplicates = F)
-#   pdf(paste('perplexity',tmp.perplexity,'tsne.rmcc.vst.cor0.15.1.0.01.10.pc8.res0.1.res0.2.pdf',sep = ''),
-#       6,5)
-#   seu.ref.raw <-
-#     SetIdent(seu.ref.raw, value = seu.ref.raw$RNA_snn_res.0.1)
-#   print(DimPlot(seu.ref.raw,
-#           reduction = "tsne",
-#           cols = c(time.colors,'gray30','black',brewer.pal(8,"Set2"),brewer.pal(8,"Set1")),
-#           label.size = 6,
-#           sizes.highlight = 4,
-#           pt.size = 2,
-#           label = T))
-#   seu.ref.raw <-
-#     SetIdent(seu.ref.raw, value = seu.ref.raw$RNA_snn_res.0.2)
-#   print(DimPlot(seu.ref.raw,
-#           reduction = "tsne",
-#           cols = c(time.colors,'gray30','black',brewer.pal(8,"Set2"),brewer.pal(8,"Set1")),
-#           label.size = 6,
-#           sizes.highlight = 4,
-#           pt.size = 2,
-#           label = T))
-#   seu.ref.raw <-
-#     SetIdent(seu.ref.raw, value = seu.ref.raw$beta)
-#   print(DimPlot(seu.ref.raw,
-#           reduction = "tsne",
-#           cols = c(time.colors,'gray30','black',brewer.pal(8,"Set2"),brewer.pal(8,"Set1")),
-#           label.size = 6,
-#           sizes.highlight = 4,
-#           pt.size = 2,
-#           label = T))
-#   seu.ref.raw <-
-#     SetIdent(seu.ref.raw, value = seu.ref.raw$Type)
-#   print(DimPlot(seu.ref.raw,
-#           reduction = "tsne",
-#           cols = c(time.colors,'gray30','black',brewer.pal(8,"Set2"),brewer.pal(8,"Set1")),
-#           label.size = 6,
-#           sizes.highlight = 4,
-#           pt.size = 2,
-#           label = F))
-#   dev.off()
-#   
-# }
+
 seu.ref.raw <- RunTSNE(seu.ref.raw,
                        dims = pc.use,
                        perplexity= round((30+ncol(seu.ref.raw)/100)),
@@ -327,39 +212,11 @@ pdf("FigS3a.tsne.log.marker.rmcc.vst.cor0.15.1.0.01.10pc5.pdf",
 Myseuratmarker(seu.ref.raw,marker.sym = Glut2LH.sym,reduction = 'tsne',pt.size= 1)
 dev.off()
 
-##########cell Type#######
-# seu.ref.raw@meta.data$subgroup <- '/'
-# seu.ref.raw@meta.data[seu.ref.raw$RNA_snn_res.0.2==3,'subgroup'] <- 'beta1'
-# seu.ref.raw@meta.data[seu.ref.raw$RNA_snn_res.0.2==1,'subgroup'] <- 'beta2'
-# seu.ref.raw@meta.data[seu.ref.raw$RNA_snn_res.0.2==2,'subgroup'] <- 'beta3'
-# seu.ref.raw@meta.data[seu.ref.raw$RNA_snn_res.0.2==0,'subgroup'] <- 'beta4'
 
 seu.ref.raw@meta.data$beta <- '/'
 seu.ref.raw@meta.data[seu.ref.raw$RNA_snn_res.0.2==3,'beta'] <- 'Glut2L'
 seu.ref.raw@meta.data[seu.ref.raw$RNA_snn_res.0.2 %in% c(2,1,0),'beta'] <- 'Glut2H'
 
-# seu.ref.raw@meta.data$subgroup2 <- '/'
-# seu.ref.raw@meta.data[seu.ref.raw$RNA_snn_res.0.2==3,'subgroup2'] <- 'beta3'
-# seu.ref.raw@meta.data[seu.ref.raw$RNA_snn_res.0.2==1,'subgroup2'] <- 'beta1'
-# seu.ref.raw@meta.data[seu.ref.raw$RNA_snn_res.0.2 %in% c(0,2),'subgroup2'] <- 'beta2'
-# 
-# 
-# seu.ref.raw@meta.data$subgroup3 <- '/'
-# seu.ref.raw@meta.data[seu.ref.L$SampleName[seu.ref.L$subgroup=='group1'],'subgroup3'] <- 'beta3'
-# seu.ref.raw@meta.data[seu.ref.L$SampleName[seu.ref.L$subgroup=='group2'],'subgroup3'] <- 'beta4'
-# seu.ref.raw@meta.data[seu.ref.raw$RNA_snn_res.0.2==1,'subgroup3'] <- 'beta1'
-# seu.ref.raw@meta.data[seu.ref.raw$RNA_snn_res.0.2%in% c(2,0),'subgroup3'] <- 'beta2'
-
-
-# group.col <- time.colors[c(8,5,6,9)]
-# names(group.col) <- c('beta1','beta2','beta3','beta4')
-# 
-# pdf('FS1.all.subgroup.barplot.pdf',8,8)
-# Mybarplot(seu.ref.raw@meta.data,c1 = 'Type',c2 = 'subgroup2',xlim = 20,cols = group.col)
-# dev.off()
-# pdf('FS1.all.subgroup3.barplot.pdf',8,8)
-# Mybarplot(seu.ref.raw@meta.data,c1 = 'Type',c2 = 'subgroup3',xlim = 20,cols = group.col)
-# dev.off()  
 ##############
 celltype.col <- c('#1f78b4','#ff7f00')
 names(celltype.col) <- c('Glut2H','Glut2L')
@@ -412,7 +269,7 @@ seu.ref.raw <- readRDS('seu.ref.raw.beta.celltype.rds')
 p.umap <- MySeuratv3TSNE10x2Gg(seu.ref.raw,
                                seu.ref.raw@meta.data
 )
-pdf("G:/lab/Article/heshuang/BYLW/sm3/ref/F1a.left.tsne.Glut2LH.cellType.pdf",
+pdf("F1a.left.tsne.Glut2LH.cellType.pdf",
     14.5,
     8)
 print(p.umap +
@@ -427,7 +284,7 @@ print(p.umap +
 
 dev.off()
 
-pdf("G:/lab/Article/heshuang/BYLW/sm3/ref/F1a.right.tsne.Type.pdf",
+pdf("F1a.right.tsne.Type.pdf",
     14.5,
     8)
 print(p.umap +
@@ -523,24 +380,7 @@ MyWriteTable(table(seu.ref.raw$beta2),row.names = T,
              'celltype.beta2.count.tab')
 
 MyWriteTable(seu.ref.raw@meta.data,'seu.ref.beta.meta.tab')
-########
-pre.alb.sym.tab <- genes.inf.input[as.character(unlist(pre.ambigous.sym.list)),]
-pre.alb.sym.tab$Type <- 'Alb'
-pre.alb.sym.tab[pre.ambigous.sym.list$exo,'Type'] <- 'exo'
-pre.alb.sym.tab[pre.ambigous.sym.list$jun,'Type'] <- 'jun'
 
-MyWriteTable(pre.alb.sym.tab,
-             'pre.ambigous.sym.tab')
-
-saveRDS(pre.ambigous.sym,'pre.ambigous.sym.rds')
-
-##########
-seu.ref.raw <- readRDS('seu.ref.raw.beta.celltype.rds')
-saveRDS(seu.ref.raw,'seu.ref.raw.beta.celltype.rds')
-##########
-seu.ref.raw <- readRDS('seu.ref.raw.beta.celltype.rds')
-rm(seu.ref.raw,seu.ref.L)
-save.image('seu.ref.raw.beta.Glut2LH.RData')
 
 
 
