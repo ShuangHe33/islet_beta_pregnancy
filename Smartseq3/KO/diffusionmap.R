@@ -12,15 +12,6 @@ for(seu in names(seu.ref.KO.list2)){
                                      names(table(seu.ref.KO.list2[[seu]]$Type)))
 }
 
-
-# plot3d(x=dif.beta.ref.df[,1],
-#        y=dif.beta.ref.df[,2],
-#        z=dif.beta.ref.df[,3],
-#        xlab='DC1',ylab='DC2',zlab='DC3',
-#        size = 5,
-#        col=MyName2Col(seu.ref.KO.list2[[seu]]$Type,
-#                       time.colors))
-
 p.dif <- Mydif2Gg(dif.beta.ref[[seu]],seu.ref.KO.list2[[seu]]@meta.data)
 p.age <- p.dif+
   #scale_y_reverse() +
