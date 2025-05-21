@@ -1,10 +1,7 @@
-dir.create('G:/project/pregnant_mouse/beta/sm3/ref/new_sm3/ref_final/beta/20221203/Glut2H')
-setwd('G:/project/pregnant_mouse/beta/sm3/ref/new_sm3/ref_final/beta/20221203/Glut2H/')
-
 
 dir.create('cluster')
 setwd('cluster')
-load('seu.beta.ges.post.RData')
+
 
 library(future)
 plan("multisession", workers = 10)
@@ -31,13 +28,6 @@ names(celltype.col2) <- c('Glut2L_1','Glut2L_2','Glut2H_1','Glut2H_2')
 ref.time.colors2 <- time.col[c(1,4,5,9:12,14,13,15,16:18,2,27,25)]
 names(ref.time.colors2) <- names(ref.time.colors)
 
-
-seu.beta <- readRDS('G:/project/pregnant_mouse/beta/sm3/ref/new_sm3/ref_final/beta/20221203/cluster/seu.ref.raw.beta.celltype.rds')
-seu.beta <- subset(seu.beta,cells = colnames(seu.beta)[seu.beta$beta %in% c('Glut2L')])
-ncol(seu.beta)#3203
-seu.beta <- readRDS('seu.beta.ges.post.rds')
-saveRDS(seu.beta,'seu.beta.ges.post.rds')
-pre.ambigous.sym <- readRDS('G:/project/pregnant_mouse/beta/sm3/ref/new_sm3/ref_final/beta/20220913/cluster/pre.ambigous.sym.rds')
 length(pre.ambigous.sym)#198
 
 pre.mt.gene <- Virgin.LH.DEG.filter$gene
@@ -64,16 +54,9 @@ dir.create('rmG0batch1')
 setwd('rmG0batch1/')
 seu.beta <- readRDS('seu.beta.ges.post.rds')
 seu.beta$Type <- as.character(seu.beta$Type)
-seu.beta@meta.data[c('m220523_hs_H_zy_20220520_1_lib13_04_072',
-                        'm220523_hs_H_zy_20220520_1_lib13_04_144',
-                        'm220523_hs_H_zy_20220520_1_lib13_04_119',
-                        'm220523_hs_H_zy_20220520_1_lib08_02_125'
-),'Type'] <- 'G14.5'
+
 seu.beta$Type <- factor(seu.beta$Type,levels = names(ref.time.colors))
 seu.beta <- readRDS('seu.beta.ges.post.rds')
-seu.beta@meta.data['m220523_hs_H_zy_20220520_1_lib13_04_072','Type']
-seu.beta <- readRDS('seu.beta.ges.post.rds')
-seu.beta.new <- readRDS('./../../../../../20230422/pre/seu.ref.raw.islet.beta.20230422.rds')
 
 seu.beta <- merge(seu.beta.new,seu.beta)
 seu.beta$Type <- factor(seu.beta$Type,levels = c(names(ref.time.colors)[1:10],'P0',names(ref.time.colors)[11:13],'P1NL',names(ref.time.colors)[14:16]))
@@ -309,91 +292,6 @@ glut2H.sub.DEG <- Myseufindmarker(seu.beta,gene.include = gene.include,ident.1 =
 Myseuratmarker(seu.beta,marker.sym = c('Oxtr','Ovol2','Acss2','Gbp8','Ikzf4'),reduction = 'umap',pt.size= 1)
 glut2H.sub.DEG.filter <- 
 
-#########
-# seu.beta$heter.group.merge <- 'beta1'
-# seu.beta@meta.data[seu.beta$RNA_snn_res.0.2==2,'heter.group.merge'] <- 'beta2'
-# seu.beta@meta.data[seu.beta$RNA_snn_res.0.2==0,'heter.group.merge'] <- 'beta3'
-# seu.beta$heter.group.merge <- factor(seu.beta$heter.group.merge,levels = c('beta1','beta2','beta3'))
-# 
-# 
-# seu.beta <- SetIdent(seu.beta,value = seu.beta$heter.group.merge)
-# DimPlot(seu.beta,
-#         reduction = "umap",
-#         cols = c(time.colors,'gray30','black',brewer.pal(8,"Set2"),brewer.pal(8,"Set1")),
-#         label.size = 6,
-#         sizes.highlight = 4,
-#         pt.size = 1,
-#         label = F)
-
-###########
-# seu.beta <- RunTSNE(seu.beta,
-#                        dims = pc.use,
-#                        perplexity= round((30+ncol(seu.beta)/100)),
-#                        check_duplicates = F)
-# 
-# pdf('tsne.rmcc.vst.cor0.15.1.0.01.10.pc13.res0.2.pdf',
-#     6,5)
-# seu.beta <-
-#   SetIdent(seu.beta, value = seu.beta$RNA_snn_res.0.2)
-# DimPlot(seu.beta,
-#         reduction = "tsne",
-#         cols = c(time.colors,'gray30','black',brewer.pal(8,"Set2"),brewer.pal(8,"Set1")),
-#         label.size = 6,
-#         sizes.highlight = 4,
-#         pt.size = 2,
-#         label = T)
-# 
-# seu.beta <-
-#   SetIdent(seu.beta, value = seu.beta$Type)
-# DimPlot(seu.beta,
-#         reduction = "tsne",
-#         cols = c(time.colors,'gray30','black',brewer.pal(8,"Set2"),brewer.pal(8,"Set1")),
-#         label.size = 6,
-#         sizes.highlight = 4,
-#         pt.size = 2,
-#         label = F)
-# dev.off()
-
-########marker########
-# marker.sym <- c(
-#   "Neurod1",#endocrine
-#   "Chga",
-#   "Chgb",
-#   "Mki67",
-#   "Ins1",
-#   'Ins2',
-#   "Ppy",
-#   "Ghrl",
-#   "Nkx6-1",
-#   "Ucn3",
-#   "Mafa",
-#   "Slc2a2",
-#   "Arx",
-#   "Gcg",
-#   "Mafb",
-#   "Sst",
-#   "Hhex",
-#   'Prlr',
-#   'Oxtr',
-#   'Ovol2',
-#   'Id4',
-#   'Tph1','Tph2','Gbp8','Sftpd',
-#   'Il1r1',
-#   'Mafb',
-#   'Hsbp1',
-#   'Tspan8',
-#   'Cd81',
-#   'Gpx3'
-# )
-# length(marker.sym)#
-# marker.sym <- marker.sym[marker.sym %in% rownames(seu.beta)]
-# length(marker.sym)#
-# marker.sym <- unique(marker.sym)
-# length(marker.sym)#57
-# total.count <- length(marker.sym)
-# run.count <- 1
-# Glut2LH.sym <- c('Ucn3','Slc2a2','Cd81','Tspan8')
-# 
 
 pdf("hetermaketr.umap.log.marker.rmcc.vst.cor0.15.1.0.01.10.pc10.pdf",
     6,
@@ -415,7 +313,7 @@ print(MyPseudotimebox(seu.beta@meta.data,time.colors = ref.time.colors,size.poin
 dev.off()
 
 
-pdf('G:/lab/Article/heshuang/BYLW/sm3/ref/Fig1b.ref.rmcc.cor0.2.1.pc12.pdf',15,12)
+pdf('.pc12.pdf',15,12)
 p.pca <- MySeuratDR2Gg2(seu.beta,seu.beta@meta.data,reduction.use = 'pca',reduction.key = 'PC',estimate.variation.explain.percentage = T)
 p.pca$data_ <- p.pca$data
 p.pca$data_$Type_ <- p.pca$data_$Type
@@ -431,15 +329,7 @@ plot(p.pca+
        ),
        size = 4
        )+theme(aspect.ratio=1))
-  # plot(p.pca+
-  #      scale_color_manual(values = time.colors) +
-  #      geom_point(aes(x =-x.pos,
-  #                     y = -y.pos,
-  #                     col = Type#,
-  #                     # shape = State
-  #      ),
-  #      size = 4
-  #      )+theme(aspect.ratio=1.5))
+
 
 dev.off()
 pdf('Figs2k.ref.rmcccc.cor0.2.1.pc12.2.pdf',15,12)
@@ -460,25 +350,8 @@ plot(p.pca+
        )+theme(aspect.ratio=1))
 
 
-#+geom_abline(size=I(2.5))
-#+stat_ellipse(aes(color = Type),type = 'norm',level = 0.5)
-# plot(p.pca+
-#      scale_color_manual(values = time.colors) +
-#      geom_point(aes(x =-x.pos,
-#                     y = -y.pos,
-#                     col = Type#,
-#                     # shape = State
-#      ),
-#      size = 4
-#      )+theme(aspect.ratio=1.5))
 
 dev.off()
-# seu.beta$pseudotime <- -Embeddings(seu.beta,'pca')[,1]
-# 
-# pdf('pc1.pseudobox.cor0.15.pdf',10,6)
-# MyPseudotimebox(seu.beta@meta.data,time.colors = time.colors)
-# MyPseudotimebox(seu.beta@meta.data,time.colors = time.colors[c(1,1,1,1,rep(2:6,each = 2),7,7,7,8,8,8)],rep = T)
-# dev.off()
 
 si.select <- seu.beta@meta.data
 pregScore=c()
@@ -535,7 +408,7 @@ names(group.col) <- c('beta1','beta2','beta3')
 seu.beta <- readRDS('seu.beta.ges.post.rds')
 seu.beta@meta.data$heter.group.merge <- factor(seu.beta@meta.data$heter.group.merge,levels = c('beta3','beta2','beta1'))
 
-pdf('G:/lab/Article/heshuang/BYLW/sm3/ref/Fs2j.Glut2H.subgroup.barplot.2.pdf',8,8)
+pdf('Glut2H.subgroup.barplot.pdf',8,8)
 Mybarplot(seu.beta@meta.data,c1 = 'Type',c2 = 'heter.group.merge',xlim = 20,cols = group.col[c(3,2,1)])
 dev.off()
 
@@ -717,19 +590,6 @@ plot3d(x=seu.beta@reductions$pca@cell.embeddings[,1],
        box=T,lwd = 1,
        axes = T,
        col=MyName2Col(seu.beta$Type,ref.time.colors))
-########
-pre.mt.tab <- genes.inf.input[pre.mt.gene,]
-pre.mt.tab$Type <- 'Mt'
-pre.ambigous.sym.tab <- MyReadDelim('../../cluster/pre.ambigous.sym.tab')
-dim(pre.ambigous.sym.tab)
-rownames(pre.ambigous.sym.tab) <- pre.ambigous.sym.tab$SymbolDedu
-
-pre.ambigous.sym.tab <- rbind(pre.ambigous.sym.tab[pre.ambigous.sym.tab$Type!='Mt',],pre.mt.tab)
-table(pre.ambigous.sym.tab$Type)
-
-MyWriteTable(pre.ambigous.sym.tab,'pre.ambigous.sym.tab')
-saveRDS(pre.ambigous.sym.tab$SymbolDedu,'pre.ambigous.sym.rds')
-saveRDS(pre.ambigous.sym,'pre.ambigous.sym.mt.rds')
 
 ########
 saveRDS(seu.beta,'seu.beta.ges.post.rds')
