@@ -1,9 +1,4 @@
-preg.gene.tab <- MyReadDelim('../../Glut2H/LMgene/gene_inf/cg.preg.gene.si.1e28.addcc.tab')
-MyGOwritetable(preg.gene.tab$EnsemblGeneID[preg.gene.tab$cluster=='preg.up'],'../../Glut2H/LMgene/go_kegg/go.preg.up.tab')
 
-
-dir.create('G:/project/pregnant_mouse/beta/sm3/ref/new_sm3/ref_final/beta/20221203/cluster/vio')
-setwd('G:/project/pregnant_mouse/beta/sm3/ref/new_sm3/ref_final/beta/20221203/cluster/vio')
 library(future)
 plan("multisession", workers = 10)
 plan()
