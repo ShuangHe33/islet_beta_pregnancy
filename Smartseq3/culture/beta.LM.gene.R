@@ -1,6 +1,3 @@
-# for(seu in names(seu.vitro.nor.list)[c(1,3)]){
-#   seu.vitro.nor.list[[seu]]$KOScore <- -Embeddings(seu.vitro.nor.list[[seu]],'pca')[,1]
-# }
 
 for(seu in names(seu.vitro.nor.list)[c(1,3)]){
   print(seu)
@@ -214,11 +211,7 @@ boxplot(-log10(KO.DEG.nor.list$Ctrl_DMSO_Ctrl_20um_Nif[c(labels(as.dendrogram(pr
 preg.gene.list <- list()
 for(seu in names(seu.vitro.nor.list)[c(1,6)]
     ){
- # preg.gene.list[[seu]] <- list()
- # preg.gene.list[[seu]][['DMSO']] <- c(labels(as.dendrogram(preg.row.tree[[seu]])[[2]][[1]]),labels(as.dendrogram(preg.row.tree[[seu]])[[2]][[2]][[1]]))
-  # preg.gene.list[[seu]][['DMSO']] <- c(labels(as.dendrogram(preg.row.tree[[seu]])[[2]]))
-  # preg.gene.list[[seu]][['treat']] <- labels(as.dendrogram(preg.row.tree[[seu]])[[1]])
-  # 
+ 
   preg.gene.list[[seu]][['Ctrl.DMSO']] <- c(labels(as.dendrogram(preg.row.tree[[seu]])[[2]]))
   preg.gene.list[[seu]][['Ctrl.treat']] <- labels(as.dendrogram(preg.row.tree[[seu]])[[1]])
 }
@@ -231,14 +224,6 @@ dir.create('direct/20221120/path/go_kegg')
 dir.create('direct/20221120/path/gene_inf')
 
 LM.gene.inf <- list()
-# for(seu in #names(seu.vitro.nor.list)[c(1,3)]
-#     c('Nif',"sm3.Nif.A485.only")
-#     ){
-#   LM.gene.inf[[seu]] <- cbind(genes.inf.input[names(preg.gene.filter[[seu]]),],preg.gene.filter[[seu]])
-#   LM.gene.inf[[seu]]$cluster <- 'DMSO.ctrl'
-#   LM.gene.inf[[seu]][preg.gene.list[[seu]][['treat.Ctrl']],'cluster'] <- 'treat.Ctrl'
-#   MyWriteTable(LM.gene.inf[[seu]],paste('direct/20221120/path/gene_inf/Ctrlfc1.5.pval0.0001.',seu,'.tab'))
-# }
 
 for(seu in names(seu.vitro.nor.list)[c(1,6)]){
   for(tmp.cluster in names(preg.gene.list[[seu]])){
