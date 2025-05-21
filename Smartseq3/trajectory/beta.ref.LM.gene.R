@@ -1,14 +1,9 @@
-setwd('G:/project/pregnant_mouse/beta/sm3/ref/new_sm3/ref_final/beta/20221203/Glut2H/')
-dir.create('LMgene')
+
 source('G:/pcatest/MyFunction.R')
 source('G:/r script/file_function.R')
-pre.ambigous.sym <- readRDS('cluster/pre.ambigous.sym.mt.rds')
-pre.cc.sym <- readRDS('cluster/pre.cc.sym.rds')
-load('cg.LMgene.RData')
 
-all.var.co2.cc <- readRDS('cluster/all.var.co2.10.0.01.cc.pathway.rds')
 ##########cc gene######
-seu.beta <- readRDS('cluster/seu.beta.ges.post.rds')
+
 celltype.col2 <- c("#E08698","#5F9EA0", "#A65628")
 names(celltype.col2) <- c('Glut2L','Glut2H_1','Glut2H_2')
 
@@ -128,7 +123,7 @@ c2Color <- as.matrix(c2Color)
 
 cColor <- cbind(c1Color,c2Color)
 
-png('G:/lab/Article/heshuang/BYLW/sm3/ref/cg.cor2.1.pregTop1e28.heatmap.png',2000,3000)
+png('cg.cor2.1.pregTop1e28.heatmap.png',2000,3000)
 preg.row.tree27 <-
   MyHeatmap(as.matrix(exp(seu.beta@assays$RNA@data))[names(preg.gene.filter2),colnames(seu.beta)[order(seu.beta$pseudotime)]],
             type = "log.row.relat",
