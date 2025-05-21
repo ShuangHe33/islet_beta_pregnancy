@@ -15,8 +15,7 @@ preg.colors <- c("#4DAF4A",
 names(preg.colors) <- c("Ctrl",
                         "G14.5_1st")
 
-all.list <- readRDS('../all.list.rds')
-beta.cc.sym <- readRDS('G:/project/pregnant_mouse/10x/10x_v3/Ctl_G14.5_1st/beta.pre.cc.sym.rds')
+
 beta.pre.cc.sym.list <- list()
 cc.col.tree.list <- list()
 
@@ -71,12 +70,7 @@ for(i in c(
   
   all.list[[i]] <- ScaleData(all.list[[i]],features = beta.pre.cc.sym.list[[i]])
   all.list[[i]] <- RunPCA(all.list[[i]],features = beta.pre.cc.sym.list[[i]])
-  # pdf(paste(i,'.pca.cc.marker.pdf'),6,7)
-  # Myseuratmarker(all.list[[i]],marker.sym = c("Cdk2","Ccne1","Mcm2","E2f7",      #G1/S
-  #                                             "Cdk1","Ccnb1","Kif4",             #G2/M
-  #                                             "Cdkn1c","Cdkn2c","Cdkn1b",
-  #                                             'Cdt1','Gmnn','Top2a','Mki67'),reduction = 'pca')
-  # dev.off()
+ 
   
   pdf(paste(i,'.exp3.hc.pc12.proliferative.pdf',sep = ''),13,12)
   p.pca <- MySeuratDR2Gg2(all.list[[i]],all.list[[i]]@meta.data,
@@ -98,22 +92,7 @@ for(i in c(
          size = 6
          )+
          theme(aspect.ratio=1))
-  
-  # p.pca$data_ <- p.pca$data
-  # p.pca$data_$hc.proliferative_ <- p.pca$data_$knn.hc.proliferative
-  # p.pca$data_$hc.proliferative_ <- factor(p.pca$data_$hc.proliferative_,levels = rev(names(table(all.list[[i]]$knn.hc.proliferative))))
-  # p.pca$data <- p.pca$data_[order(p.pca$data_$hc.proliferative_),]
-  
-  # plot(p.pca+
-  #        scale_color_manual(values = c("#ba984d",'gray90')) +
-  #        geom_point(aes(x =x.pos,
-  #                       y = y.pos,
-  #                       col = hc.proliferative#,
-  #                       # shape = State
-  #        ),
-  #        size =6
-  #        )+
-  #        theme(aspect.ratio=1))
+ 
    dev.off()
 }
 ########plot marker######
@@ -173,6 +152,3 @@ for(i in c(
   
   dev.off()
 }
-######
-rm(all.list)
-save.image('Nbeta.cc.RData')
