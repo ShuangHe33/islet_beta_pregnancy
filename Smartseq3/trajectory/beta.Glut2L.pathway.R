@@ -85,17 +85,7 @@ plot(p.pca+
        ),
        size = 5
        )+theme(aspect.ratio=1))
-# plot(p.pca+
-#        scale_color_manual(values = time.colors) +
-#        geom_text(aes(x =-x.pos,
-#                       y = y.pos,
-#                       col = Type#,
-#                       # shape = State
-#        ),
-#        size = 1
-#        )+theme(aspect.ratio=1))
 
-dev.off()
 #############cc marker#######
 p.loop <- p.pca +
   scale_color_gradientn(colours = colors.exp) +
@@ -140,17 +130,7 @@ for (plot.ens in cellcycle.marker.set){
 }
 dev.off()
 #############
-# si.select <- seu.ref.L@meta.data
-# pregScore=c()
-# for (time in names(table(seu.ref.L$Type))) {
-#   regress=lm(-Embeddings(seu.ref.L,'pca')[si.select$Type==time,2]~
-#                Embeddings(seu.ref.L,'pca')[si.select$Type==time,1])$coefficients[2]
-#   temp=-c(1,regress)%*%rbind(Embeddings(seu.ref.L,'pca')[si.select$Type==time,1],
-#                              Embeddings(seu.ref.L,'pca')[si.select$Type==time,2])
-#   # temp=temp-mean(temp)
-#   names(temp)=si.select[si.select$Type==time,]$SampleName
-#   pregScore=c(pregScore,temp)
-# }
+
 
 #seu.ref.L@meta.data[names(pregScore),'pregScore'] <- pregScore
 seu.ref.L <- readRDS('Glut2L/seu.ref.L.endo.celltype.rds')
