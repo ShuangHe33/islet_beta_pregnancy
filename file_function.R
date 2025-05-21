@@ -139,85 +139,9 @@ tss.bed <- readGeneric("/lustre1/heshuang/work/genome/mm10/mm10.tss.bed",
                                         trans.id = 6),
                         zero.based = T)
 names(tss.bed) <- mcols(tss.bed)$trans.id
-# gene.tpm <- read.table("H:/system/E/beta-chip/promoter/2017-12-22 promoter/Bulk_Cell_RNA-seq_Pooled_Normalized_Gene_TPM.txt",
-#                        # row.names = 'ID',
-#                        header = T,
-#                        stringsAsFactors = FALSE
-# )
-# gene.tpm <- read.delim("G:/lab/gene inf/mm10/Bulk_Cell_RNA-seq_Gene_Read_Count-4.tpm.txt",
-#                        header = T,
-#                        stringsAsFactors = F)
-# 
-# row.names(gene.tpm) <- gene.tpm$ID
-# sum(is.na((gene.tpm)))
-# 
-# gene.split.tpm <- read.delim("G:/lab/gene inf/mm10/Bulk_Cell_RNA-seq_Gene_Read_Count-4.tpm.split.txt",
-#                        header = T,
-#                        stringsAsFactors = F)
-# 
-# row.names(gene.split.tpm) <- gene.split.tpm$ID
-
-# gene.tpm <- read.delim("G:/project/endocrine_chromatin/beta/analysis/bulk-RNA-seq/merge/beta.tpm.merge.norm.rmP12.1.tab",
-#                        header = T,
-#                        stringsAsFactors = F)
-# row.names(gene.tpm) <- gene.tpm$ID
 
 
-# bulk_inf <- MyReadDelim("G:/lab/gene inf/mm10/bulk_inf.20161209.tab")
-# rownames(bulk_inf) <- bulk_inf$EnsemblGeneID
 
-# gene.parts <-  MyReadTranscriptFeatures("G:/lab/genome/mm10/mm10_convert_ens_filter.refFlat.bed",
-#                                         up.flank = 2000,
-#                                         down.flank = 2000)
-
-genes.inf.input <- MyReadDelim("/lustre1/heshuang/work/gene_inf/mm10.gene.inf.merge.v1.2.tab")
-
-rownames(genes.inf.input) <- genes.inf.input$SymbolDedu
-
-
-#hg38.genes.inf.input <- read.csv('G:/lab/gene inf/hg38.gene.inf.merge.v3.csv',stringsAsFactors = F)
-
-
-# cellcycle.inf <- read.csv("G:/lab/alpha_beta supplyment//cellCycle betacell.csv",
-#                           stringsAsFactors = F,
-#                           header=T)
-# rownames(cellcycle.inf) <- cellcycle.inf$ID
-# 
-# beta.ss2.immature.gene <- read.csv("G:/lab/alpha_beta supplyment/Cluster 2 genes highly expressed in immature beta-cells.csv",
-#                           stringsAsFactors = F,
-#                           header = T)
-# row.names(beta.ss2.immature.gene) <- beta.ss2.immature.gene$ID
-# 
-# beta.ss2.mature.gene <- read.csv("G:/lab/alpha_beta supplyment/Cluster 3 genes highly expressed in mature beta-cells.csv",
-#                         stringsAsFactors = F,
-#                         header = T)
-# row.names(beta.ss2.mature.gene) <- beta.ss2.mature.gene$ID
-# 
-# 
-# sc.mature.alpha.gene <- read.csv("G:/lab/alpha_beta supplyment/alpha_ma_high_ens.csv",
-#                                  stringsAsFactors = F)
-# rownames(sc.mature.alpha.gene) <- sc.mature.alpha.gene$ID
-# 
-# sc.immature.alpha.gene <- read.csv("G:/lab/alpha_beta supplyment/alpha_imm_high_ens.csv",
-#                                  stringsAsFactors = F)
-# rownames(sc.immature.alpha.gene) <- sc.immature.alpha.gene$ID
-
-
-# alpha.sc.tpm.df <- MyReadDelim("G:/lab/genome/mm10/ss2_alpha.sc_tpm/ss2.alpha.sc.tpm.tab")
-# rownames(alpha.sc.tpm.df) <- alpha.sc.tpm.df$EnsemblGeneID
-# alpha.sc.tpm.norm.df <- MyReadDelim("G:/lab/genome/mm10/ss2_alpha.sc_tpm/ss2.alpha.sc.tpm.norm.tab")
-# rownames(alpha.sc.tpm.norm.df) <- alpha.sc.tpm.norm.df$EnsemblGeneID
-
-
-# alpha.high.tab <- read.csv("G:/lab/alpha and beta supp/gene highly expressed in alpha cells.csv",
-#                            stringsAsFactors = F)
-# rownames(alpha.high.tab) <- alpha.high.tab$ID
-# nrow(alpha.high.tab)#611
-# 
-# beta.high.tab <- read.csv("G:/lab/alpha and beta supp/gene highly expressed in beta cells.csv",
-#                           stringsAsFactors = F)
-# rownames(beta.high.tab) <- beta.high.tab$ID
-# nrow(beta.high.tab)#762
 
 
 
