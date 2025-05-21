@@ -1,5 +1,3 @@
-setwd('G:/project/pregnant_mouse/chromatin/H3K27ac/Acss2HMKO/20221018_3rep/c1')
-load('G18.5Acss2HMKO.RData')
 
 MyLimmaPlot3 <- 
   function(de.data,
